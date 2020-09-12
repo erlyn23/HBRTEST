@@ -1,0 +1,9 @@
+C:\Users\Lenovo\Documents\Visual Studio 2019\Projects\HBRTEST\HBRTEST\HBRTEST.Entities\bin\Debug\netstandard2.0\HBRTEST.Entities.deps.json
+C:\Users\Lenovo\Documents\Visual Studio 2019\Projects\HBRTEST\HBRTEST\HBRTEST.Entities\bin\Debug\netstandard2.0\HBRTEST.Entities.dll
+C:\Users\Lenovo\Documents\Visual Studio 2019\Projects\HBRTEST\HBRTEST\HBRTEST.Entities\bin\Debug\netstandard2.0\HBRTEST.Entities.pdb
+C:\Users\Lenovo\Documents\Visual Studio 2019\Projects\HBRTEST\HBRTEST\HBRTEST.Entities\obj\Debug\netstandard2.0\HBRTEST.Entities.csprojAssemblyReference.cache
+C:\Users\Lenovo\Documents\Visual Studio 2019\Projects\HBRTEST\HBRTEST\HBRTEST.Entities\obj\Debug\netstandard2.0\HBRTEST.Entities.AssemblyInfoInputs.cache
+C:\Users\Lenovo\Documents\Visual Studio 2019\Projects\HBRTEST\HBRTEST\HBRTEST.Entities\obj\Debug\netstandard2.0\HBRTEST.Entities.AssemblyInfo.cs
+C:\Users\Lenovo\Documents\Visual Studio 2019\Projects\HBRTEST\HBRTEST\HBRTEST.Entities\obj\Debug\netstandard2.0\HBRTEST.Entities.csproj.CoreCompileInputs.cache
+C:\Users\Lenovo\Documents\Visual Studio 2019\Projects\HBRTEST\HBRTEST\HBRTEST.Entities\obj\Debug\netstandard2.0\HBRTEST.Entities.dll
+C:\Users\Lenovo\Documents\Visual Studio 2019\Projects\HBRTEST\HBRTEST\HBRTEST.Entities\obj\Debug\netstandard2.0\HBRTEST.Entities.pdb

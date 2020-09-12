@@ -5,13 +5,16 @@ using System.Data.SqlClient;
 using System.Configuration;
 using HBRTEST.Entities;
 using HBRTEST.Utilities;
+using System.ComponentModel;
 
 namespace HBRTEST.DAL
 {
-    class UsersDAL
+    public class UsersDAL: IDisposable
     {
         #region Definiciones
         SqlDataReader sqlDataReader;
+        private Component components = new Component();
+        private bool _disposed = false;
         #endregion
         #region Constructor
         public UsersDAL()
@@ -183,6 +186,27 @@ namespace HBRTEST.DAL
             }
         }
         #endregion
+        #endregion
+
+        #region Destructor
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!this._disposed)
+            {
+                if (disposing)
+                {
+                    this.components.Dispose();
+                    this.components = null;
+                }
+            }
+            this._disposed = true;
+        }
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+        ~UsersDAL() => Dispose(false);
         #endregion
     }
 }

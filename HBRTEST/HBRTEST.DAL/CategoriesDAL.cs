@@ -3,13 +3,16 @@ using System.Collections.Generic;
 using System.Text;
 using System.Data.SqlClient;
 using HBRTEST.Entities;
+using System.ComponentModel;
 
 namespace HBRTEST.DAL
 {
-    class CategoriesDAL
+    public class CategoriesDAL: IDisposable
     {
         #region Definiciones
         SqlDataReader sqlDataReader;
+        private Component components = new Component();
+        private bool _disposed = false;
         #endregion
         #region Constructor
         public CategoriesDAL()
@@ -41,7 +44,7 @@ namespace HBRTEST.DAL
                     category.Description = sqlDataReader.GetString(2);
                     lstCategories.Add(category);
                 }
-                if(lstCategories.Count > 0)
+                if(lstCategories != null)
                 {
                     sqlDataReader.Close();
                     sqlConnection.Close();
@@ -97,7 +100,7 @@ namespace HBRTEST.DAL
             }
             #endregion
         }
-        public bool CreateCategory(CategoryEntity category)
+        public string CreateCategory(CategoryEntity category)
         {
             #region Definiciones
             SqlConnection sqlConnection = DBConnection.DbInstance();
@@ -109,7 +112,7 @@ namespace HBRTEST.DAL
                 bool isCategoryNameExists = ValidateIfCategoryNameExists(category.CategoryName);
                 if (isCategoryNameExists)
                 {
-                    return false;
+                    return "La categoría ya existe, intente con una nueva";
                 }
                 sqlConnection.Open();
                 command.Connection = sqlConnection;
@@ -119,7 +122,7 @@ namespace HBRTEST.DAL
                 command.Parameters.Add(new SqlParameter("@Description", category.Description));
                 command.ExecuteNonQuery();
                 sqlConnection.Close();
-                return true;
+                return "Categoría creada correctamente";
             }
             catch
             {
@@ -220,6 +223,26 @@ namespace HBRTEST.DAL
             #endregion
         }
         #endregion
+        #endregion
+        #region Destructor
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!this._disposed)
+            {
+                if (disposing)
+                {
+                    this.components.Dispose();
+                    this.components = null;
+                }
+            }
+            this._disposed = true;
+        }
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+        ~CategoriesDAL() => Dispose(false);
         #endregion
     }
 }

@@ -4,4 +4,9 @@
     <TargetFramework>netstandard2.0</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\HBRTEST.DAL\HBRTEST.DAL.csproj" />
+    <ProjectReference Include="..\HBRTEST.Entities\HBRTEST.Entities.csproj" />
+  </ItemGroup>
+
 </Project>

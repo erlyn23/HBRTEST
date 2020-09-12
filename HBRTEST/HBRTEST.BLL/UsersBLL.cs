@@ -7,7 +7,7 @@ using HBRTEST.Entities;
 
 namespace HBRTEST.BLL
 {
-    class UsersBLL: IDisposable
+    public class UsersBLL: IDisposable
     {
         #region Definiciones
         private Component components = new Component();

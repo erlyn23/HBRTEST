@@ -42,6 +42,26 @@ namespace HBRTEST.BLL
             }
         }
 
+        public ProductEntity GetProductById(int ProductID)
+        {
+            try
+            {
+                using (ProductsDAL _productsRepository = new ProductsDAL())
+                {
+                    ProductEntity product = _productsRepository.GetProductById(ProductID);
+                    if (product != null)
+                    {
+                        return product;
+                    }
+                    return null;
+                }
+            }
+            catch
+            {
+                throw new Exception();
+            }
+        }
+
         public List<ProductEntity> FilterProductsByCategoryName(string CategoryName)
         {
             try

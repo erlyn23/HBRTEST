@@ -5,6 +5,7 @@ using System.Data.SqlClient;
 using System.Configuration;
 using HBRTEST.Entities;
 using HBRTEST.Utilities;
+using HBRTEST.ErrorHandling;
 
 namespace HBRTEST.DAL
 {
@@ -22,16 +23,25 @@ namespace HBRTEST.DAL
             if (connection.State != System.Data.ConnectionState.Closed)
                 connection.Close();
         }
-        public int CreateUser(UserEntity user)
+        public void CreateUser(UserEntity user)
         {
             SqlConnection sqlConnection = dbConnection.GetDbConnection();
             SqlCommand command = commandInstance.GetSqlCommand();
             try
             {
-                bool existsUser = ValidateIfUserExists(user.UserName);
-                if (existsUser)
+                bool hasUserEmptyFields = ValidateNullOrEmptyFields(user);
+                bool isUserNameExists = ValidateIfUserNameExists(user.UserName);
+                if (user == null)
                 {
-                    return 0;
+                    throw new PersonalizedException("El usuario no puede ser nulo");
+                }
+                else if (hasUserEmptyFields)
+                {
+                    throw new PersonalizedException("No puedes dejar campos vacíos");
+                }
+                else if (isUserNameExists)
+                {
+                    throw new PersonalizedException("El nombre de usuario ya existe, intente con uno nuevo");
                 }
                 else
                 {
@@ -49,21 +59,30 @@ namespace HBRTEST.DAL
                     command.Parameters.Add(new SqlParameter("@Password", PasswordEncrypt.Encrypt(user.Password)));
                     command.ExecuteNonQuery();
                     CloseConnection(sqlConnection);
-                    return 1;
                 }
             }
-            catch
+            catch(Exception exception)
             {
-                throw;
+                throw new PersonalizedException(exception.Message);
             }
             finally
             {
                 CloseConnection(sqlConnection);
             }
         }
-
-        private bool ValidateIfUserExists(string UserName)
+        private bool ValidateNullOrEmptyFields(UserEntity user)
         {
+            if (string.IsNullOrEmpty(user.FirstName) || string.IsNullOrEmpty(user.LastName) || string.IsNullOrEmpty(user.CellPhone)
+                || string.IsNullOrEmpty(user.Genre) || string.IsNullOrEmpty(user.Email) || string.IsNullOrEmpty(user.UserName)
+                || string.IsNullOrEmpty(user.Password))
+            {
+                return true;
+            }
+            return false;
+        }
+        private bool ValidateIfUserNameExists(string UserName)
+        {
+
             SqlConnection sqlConnection = dbConnection.GetDbConnection();
             SqlCommand command = commandInstance.GetSqlCommand();
             try
@@ -73,7 +92,7 @@ namespace HBRTEST.DAL
                 command.CommandText = "ValidateIfUserExists";
                 command.CommandType = System.Data.CommandType.StoredProcedure;
                 command.Parameters.Clear();
-                command.Parameters.AddWithValue("@UserName", UserName);
+                command.Parameters.Add(new SqlParameter("@UserName", UserName));
                 sqlDataReader = command.ExecuteReader();
                 while (sqlDataReader.Read())
                 {
@@ -88,9 +107,9 @@ namespace HBRTEST.DAL
                 CloseConnection(sqlConnection);
                 return false;
             }
-            catch
+            catch(Exception exception)
             {
-                throw;
+                throw new PersonalizedException(exception.Message);
             }
             finally
             {
@@ -105,65 +124,86 @@ namespace HBRTEST.DAL
 
             try
             {
-                sqlConnection.Open();
-                command.Connection = sqlConnection;
-                command.CommandText = "GetUserByUserNameAndPassword";
-                command.CommandType = System.Data.CommandType.StoredProcedure;
-                command.Parameters.Clear();
-                command.Parameters.Add(new SqlParameter("@UserName", UserName));
-                command.Parameters.Add(new SqlParameter("@Password", Password));
-                sqlDataReader = command.ExecuteReader();
-                while (sqlDataReader.Read())
+                if(string.IsNullOrEmpty(UserName) || string.IsNullOrEmpty(Password))
                 {
-                    user.UserId = sqlDataReader.GetInt32(0);
-                    user.FirstName = sqlDataReader.GetString(1);
-                    user.LastName = sqlDataReader.GetString(2);
-                    user.CellPhone = sqlDataReader.GetString(3);
-                    user.Genre = sqlDataReader.GetString(4);
-                    user.Email = sqlDataReader.GetString(5);
-                    user.UserName = sqlDataReader.GetString(6);
-                    user.Password = sqlDataReader.GetString(7);
+                    throw new PersonalizedException("Debes ingresar un nombre de usuario y una contraseña");
                 }
-                sqlDataReader.Close();
-                CloseConnection(sqlConnection);
-                return user;
+                else
+                {
+                    sqlConnection.Open();
+                    command.Connection = sqlConnection;
+                    command.CommandText = "GetUserByUserNameAndPassword";
+                    command.CommandType = System.Data.CommandType.StoredProcedure;
+                    command.Parameters.Clear();
+                    command.Parameters.Add(new SqlParameter("@UserName", UserName));
+                    command.Parameters.Add(new SqlParameter("@Password", PasswordEncrypt.Encrypt(Password)));
+                    sqlDataReader = command.ExecuteReader();
+                    while (sqlDataReader.Read())
+                    {
+                        user.UserId = sqlDataReader.GetInt32(0);
+                        user.FirstName = sqlDataReader.GetString(1);
+                        user.LastName = sqlDataReader.GetString(2);
+                        user.CellPhone = sqlDataReader.GetString(3);
+                        user.Genre = sqlDataReader.GetString(4);
+                        user.Email = sqlDataReader.GetString(5);
+                        user.UserName = sqlDataReader.GetString(6);
+                        user.Password = sqlDataReader.GetString(7);
+                    }
+                    sqlDataReader.Close();
+                    CloseConnection(sqlConnection);
+                    if(user == null)
+                    {
+                        throw new PersonalizedException("El nombre de usuario o contraseña incorrecta");
+                    }
+                    return user;
+                }
             }
-            catch
+            catch(Exception exception)
             {
-                throw;
+                throw new PersonalizedException(exception.Message);
             }
             finally
             {
-                sqlDataReader.Close();
                 CloseConnection(sqlConnection);
             }
         }
-        public int UpdateProfile(UserEntity user)
+        public void UpdateProfile(UserEntity user)
         {
             SqlConnection sqlConnection = dbConnection.GetDbConnection();
             SqlCommand command = commandInstance.GetSqlCommand();
 
             try
             {
-                sqlConnection.Open();
-                command.Connection = sqlConnection;
-                command.CommandText = "UpdateUser";
-                command.CommandType = System.Data.CommandType.StoredProcedure;
-                command.Parameters.Clear();
-                command.Parameters.Add(new SqlParameter("@UserId", user.UserId));
-                command.Parameters.Add(new SqlParameter("@FirstName", user.FirstName));
-                command.Parameters.Add(new SqlParameter("@LastName", user.LastName));
-                command.Parameters.Add(new SqlParameter("@CellPhone", user.CellPhone));
-                command.Parameters.Add(new SqlParameter("@Genre", user.Genre));
-                command.Parameters.Add(new SqlParameter("@Email", user.Email));
-                command.Parameters.Add(new SqlParameter("@Password", PasswordEncrypt.Encrypt(user.Password)));
-                command.ExecuteNonQuery();
-                CloseConnection(sqlConnection);
-                return 1;
+                bool hasUserEmptyFields = ValidateNullOrEmptyFields(user);
+                if(user == null)
+                {
+                    throw new PersonalizedException("El usuario no puede ser nulo o vacío");
+                }
+                else if (hasUserEmptyFields)
+                {
+                    throw new PersonalizedException("No puedes dejar campos vacíos");
+                }
+                else
+                {
+                    sqlConnection.Open();
+                    command.Connection = sqlConnection;
+                    command.CommandText = "UpdateUser";
+                    command.CommandType = System.Data.CommandType.StoredProcedure;
+                    command.Parameters.Clear();
+                    command.Parameters.Add(new SqlParameter("@UserId", user.UserId));
+                    command.Parameters.Add(new SqlParameter("@FirstName", user.FirstName));
+                    command.Parameters.Add(new SqlParameter("@LastName", user.LastName));
+                    command.Parameters.Add(new SqlParameter("@CellPhone", user.CellPhone));
+                    command.Parameters.Add(new SqlParameter("@Genre", user.Genre));
+                    command.Parameters.Add(new SqlParameter("@Email", user.Email));
+                    command.Parameters.Add(new SqlParameter("@Password", PasswordEncrypt.Encrypt(user.Password)));
+                    command.ExecuteNonQuery();
+                    CloseConnection(sqlConnection);
+                }
             }
-            catch
+            catch(Exception exception)
             {
-                throw;
+                throw new PersonalizedException(exception.Message);
             }
             finally
             {

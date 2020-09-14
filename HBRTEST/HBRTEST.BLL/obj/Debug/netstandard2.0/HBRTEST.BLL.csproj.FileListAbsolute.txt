@@ -1,0 +1,4 @@
+C:\Users\Lenovo\Documents\Visual Studio 2019\Projects\HBRTEST\HBRTEST\HBRTEST.BLL\obj\Debug\netstandard2.0\HBRTEST.BLL.csprojAssemblyReference.cache
+C:\Users\Lenovo\Documents\Visual Studio 2019\Projects\HBRTEST\HBRTEST\HBRTEST.BLL\obj\Debug\netstandard2.0\HBRTEST.BLL.AssemblyInfoInputs.cache
+C:\Users\Lenovo\Documents\Visual Studio 2019\Projects\HBRTEST\HBRTEST\HBRTEST.BLL\obj\Debug\netstandard2.0\HBRTEST.BLL.AssemblyInfo.cs
+C:\Users\Lenovo\Documents\Visual Studio 2019\Projects\HBRTEST\HBRTEST\HBRTEST.BLL\obj\Debug\netstandard2.0\HBRTEST.BLL.csproj.CoreCompileInputs.cache

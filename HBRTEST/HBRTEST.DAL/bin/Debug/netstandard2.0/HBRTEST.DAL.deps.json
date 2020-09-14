@@ -10,6 +10,7 @@
       "HBRTEST.DAL/1.0.0": {
         "dependencies": {
           "HBRTEST.Entities": "1.0.0",
+          "HBRTEST.ErrorHandling": "1.0.0",
           "HBRTEST.Utilities": "1.0.0",
           "NETStandard.Library": "2.0.3",
           "System.Configuration.ConfigurationManager": "4.7.0",
@@ -183,6 +184,11 @@
           "HBRTEST.Entities.dll": {}
         }
       },
+      "HBRTEST.ErrorHandling/1.0.0": {
+        "runtime": {
+          "HBRTEST.ErrorHandling.dll": {}
+        }
+      },
       "HBRTEST.Utilities/1.0.0": {
         "runtime": {
           "HBRTEST.Utilities.dll": {}
@@ -330,6 +336,11 @@
       "hashPath": "system.text.encoding.codepages.4.7.0.nupkg.sha512"
     },
     "HBRTEST.Entities/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "HBRTEST.ErrorHandling/1.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""

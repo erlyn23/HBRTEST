@@ -1,0 +1,9 @@
+C:\Users\Lenovo\Documents\Visual Studio 2019\Projects\HBRTEST\HBRTEST\HBRTEST.ErrorHandling\bin\Debug\netstandard2.0\HBRTEST.ErrorHandling.deps.json
+C:\Users\Lenovo\Documents\Visual Studio 2019\Projects\HBRTEST\HBRTEST\HBRTEST.ErrorHandling\bin\Debug\netstandard2.0\HBRTEST.ErrorHandling.dll
+C:\Users\Lenovo\Documents\Visual Studio 2019\Projects\HBRTEST\HBRTEST\HBRTEST.ErrorHandling\bin\Debug\netstandard2.0\HBRTEST.ErrorHandling.pdb
+C:\Users\Lenovo\Documents\Visual Studio 2019\Projects\HBRTEST\HBRTEST\HBRTEST.ErrorHandling\obj\Debug\netstandard2.0\HBRTEST.ErrorHandling.csprojAssemblyReference.cache
+C:\Users\Lenovo\Documents\Visual Studio 2019\Projects\HBRTEST\HBRTEST\HBRTEST.ErrorHandling\obj\Debug\netstandard2.0\HBRTEST.ErrorHandling.AssemblyInfoInputs.cache
+C:\Users\Lenovo\Documents\Visual Studio 2019\Projects\HBRTEST\HBRTEST\HBRTEST.ErrorHandling\obj\Debug\netstandard2.0\HBRTEST.ErrorHandling.AssemblyInfo.cs
+C:\Users\Lenovo\Documents\Visual Studio 2019\Projects\HBRTEST\HBRTEST\HBRTEST.ErrorHandling\obj\Debug\netstandard2.0\HBRTEST.ErrorHandling.csproj.CoreCompileInputs.cache
+C:\Users\Lenovo\Documents\Visual Studio 2019\Projects\HBRTEST\HBRTEST\HBRTEST.ErrorHandling\obj\Debug\netstandard2.0\HBRTEST.ErrorHandling.dll
+C:\Users\Lenovo\Documents\Visual Studio 2019\Projects\HBRTEST\HBRTEST\HBRTEST.ErrorHandling\obj\Debug\netstandard2.0\HBRTEST.ErrorHandling.pdb

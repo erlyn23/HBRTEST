@@ -12,3 +12,5 @@ C:\Users\Lenovo\Documents\Visual Studio 2019\Projects\HBRTEST\HBRTEST\HBRTEST.DA
 C:\Users\Lenovo\Documents\Visual Studio 2019\Projects\HBRTEST\HBRTEST\HBRTEST.DAL\obj\Debug\netstandard2.0\HBRTEST.DAL.pdb
 C:\Users\Lenovo\Documents\Visual Studio 2019\Projects\HBRTEST\HBRTEST\HBRTEST.DAL\bin\Debug\netstandard2.0\HBRTEST.Utilities.dll
 C:\Users\Lenovo\Documents\Visual Studio 2019\Projects\HBRTEST\HBRTEST\HBRTEST.DAL\bin\Debug\netstandard2.0\HBRTEST.Utilities.pdb
+C:\Users\Lenovo\Documents\Visual Studio 2019\Projects\HBRTEST\HBRTEST\HBRTEST.DAL\bin\Debug\netstandard2.0\HBRTEST.ErrorHandling.dll
+C:\Users\Lenovo\Documents\Visual Studio 2019\Projects\HBRTEST\HBRTEST\HBRTEST.DAL\bin\Debug\netstandard2.0\HBRTEST.ErrorHandling.pdb

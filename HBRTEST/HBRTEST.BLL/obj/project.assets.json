@@ -266,6 +266,7 @@
         "framework": ".NETStandard,Version=v2.0",
         "dependencies": {
           "HBRTEST.Entities": "1.0.0",
+          "HBRTEST.ErrorHandling": "1.0.0",
           "HBRTEST.Utilities": "1.0.0",
           "System.Configuration.ConfigurationManager": "4.7.0",
           "System.Data.SqlClient": "4.8.2"
@@ -285,6 +286,16 @@
         },
         "runtime": {
           "bin/placeholder/HBRTEST.Entities.dll": {}
+        }
+      },
+      "HBRTEST.ErrorHandling/1.0.0": {
+        "type": "project",
+        "framework": ".NETStandard,Version=v2.0",
+        "compile": {
+          "bin/placeholder/HBRTEST.ErrorHandling.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/HBRTEST.ErrorHandling.dll": {}
         }
       },
       "HBRTEST.Utilities/1.0.0": {
@@ -1031,6 +1042,11 @@
       "type": "project",
       "path": "../HBRTEST.Entities/HBRTEST.Entities.csproj",
       "msbuildProject": "../HBRTEST.Entities/HBRTEST.Entities.csproj"
+    },
+    "HBRTEST.ErrorHandling/1.0.0": {
+      "type": "project",
+      "path": "../HBRTEST.ErrorHandling/HBRTEST.ErrorHandling.csproj",
+      "msbuildProject": "../HBRTEST.ErrorHandling/HBRTEST.ErrorHandling.csproj"
     },
     "HBRTEST.Utilities/1.0.0": {
       "type": "project",

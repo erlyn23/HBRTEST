@@ -11,6 +11,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\HBRTEST.Entities\HBRTEST.Entities.csproj" />
+    <ProjectReference Include="..\HBRTEST.ErrorHandling\HBRTEST.ErrorHandling.csproj" />
     <ProjectReference Include="..\HBRTEST.Utilities\HBRTEST.Utilities.csproj" />
   </ItemGroup>
 

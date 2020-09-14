@@ -5,50 +5,41 @@ using System.Data.SqlClient;
 using System.Configuration;
 using HBRTEST.Entities;
 using HBRTEST.Utilities;
-using System.ComponentModel;
 
 namespace HBRTEST.DAL
 {
-    public class UsersDAL: IDisposable
+    public class UsersDAL
     {
-        #region Definiciones
         SqlDataReader sqlDataReader;
-        private Component components = new Component();
-        private bool _disposed = false;
-        #endregion
-        #region Constructor
+        DBConnection dbConnection = DBConnection.DbConnectionInstance();
+        sqlCommand commandInstance = sqlCommand.InstanceCommand();
         public UsersDAL()
         {
 
         }
-        #endregion
-        #region Propiedades
-        #endregion
-        #region Métodos
-        #region Métodos Públicos
-
-
-        public string CreateUser(UserEntity user)
+        private void CloseConnection(SqlConnection connection)
         {
-            #region Definiciones
-            SqlConnection sqlConnection = DBConnection.DbInstance();
-            SqlCommand command = sqlCommand.InstanceCommand();
-            #endregion
-            #region Proceso
-
+            if (connection.State != System.Data.ConnectionState.Closed)
+                connection.Close();
+        }
+        public int CreateUser(UserEntity user)
+        {
+            SqlConnection sqlConnection = dbConnection.GetDbConnection();
+            SqlCommand command = commandInstance.GetSqlCommand();
             try
             {
                 bool existsUser = ValidateIfUserExists(user.UserName);
                 if (existsUser)
                 {
-                    return "Error: El usuario ya existe, intente con uno nuevo";
+                    return 0;
                 }
                 else
                 {
                     sqlConnection.Open();
                     command.Connection = sqlConnection;
-                    command.CommandText = "exec CreateUser";
+                    command.CommandText = "CreateUser";
                     command.CommandType = System.Data.CommandType.StoredProcedure;
+                    command.Parameters.Clear();
                     command.Parameters.Add(new SqlParameter("@FirstName", user.FirstName));
                     command.Parameters.Add(new SqlParameter("@LastName", user.LastName));
                     command.Parameters.Add(new SqlParameter("@CellPhone", user.CellPhone));
@@ -57,31 +48,68 @@ namespace HBRTEST.DAL
                     command.Parameters.Add(new SqlParameter("@UserName", user.UserName));
                     command.Parameters.Add(new SqlParameter("@Password", PasswordEncrypt.Encrypt(user.Password)));
                     command.ExecuteNonQuery();
-                    sqlConnection.Close();
-                    return "Usuario registrado correctamente";
+                    CloseConnection(sqlConnection);
+                    return 1;
                 }
             }
-            catch (Exception exception)
+            catch
             {
-                sqlConnection.Close();
-                return exception.Message;
+                throw;
             }
-            #endregion
+            finally
+            {
+                CloseConnection(sqlConnection);
+            }
         }
-        public UserEntity SignIn(string UserName, string Password)
+
+        private bool ValidateIfUserExists(string UserName)
         {
-            #region Definiciones
-            SqlConnection sqlConnection = DBConnection.DbInstance();
-            SqlCommand command = sqlCommand.InstanceCommand();
-            UserEntity user = new UserEntity();
-            #endregion
-            #region Proceso
+            SqlConnection sqlConnection = dbConnection.GetDbConnection();
+            SqlCommand command = commandInstance.GetSqlCommand();
             try
             {
                 sqlConnection.Open();
                 command.Connection = sqlConnection;
-                command.CommandText = "exec GetUserByUserNameAndPassword";
+                command.CommandText = "ValidateIfUserExists";
                 command.CommandType = System.Data.CommandType.StoredProcedure;
+                command.Parameters.Clear();
+                command.Parameters.AddWithValue("@UserName", UserName);
+                sqlDataReader = command.ExecuteReader();
+                while (sqlDataReader.Read())
+                {
+                    if (!string.IsNullOrEmpty(sqlDataReader.GetString(0)))
+                    {
+                        sqlDataReader.Close();
+                        CloseConnection(sqlConnection);
+                        return true;
+                    }
+                }
+                sqlDataReader.Close();
+                CloseConnection(sqlConnection);
+                return false;
+            }
+            catch
+            {
+                throw;
+            }
+            finally
+            {
+                CloseConnection(sqlConnection);
+            }
+        }
+        public UserEntity SignIn(string UserName, string Password)
+        {
+            SqlConnection sqlConnection = dbConnection.GetDbConnection();
+            SqlCommand command = commandInstance.GetSqlCommand();
+            UserEntity user = new UserEntity();
+
+            try
+            {
+                sqlConnection.Open();
+                command.Connection = sqlConnection;
+                command.CommandText = "GetUserByUserNameAndPassword";
+                command.CommandType = System.Data.CommandType.StoredProcedure;
+                command.Parameters.Clear();
                 command.Parameters.Add(new SqlParameter("@UserName", UserName));
                 command.Parameters.Add(new SqlParameter("@Password", Password));
                 sqlDataReader = command.ExecuteReader();
@@ -96,37 +124,32 @@ namespace HBRTEST.DAL
                     user.UserName = sqlDataReader.GetString(6);
                     user.Password = sqlDataReader.GetString(7);
                 }
-                if (user != null)
-                {
-                    sqlDataReader.Close();
-                    sqlConnection.Close();
-                    return user;
-                }
                 sqlDataReader.Close();
-                sqlConnection.Close();
-                return null;
+                CloseConnection(sqlConnection);
+                return user;
             }
             catch
             {
-                sqlDataReader.Close();
-                sqlConnection.Close();
-                throw new Exception();
+                throw;
             }
-            #endregion
+            finally
+            {
+                sqlDataReader.Close();
+                CloseConnection(sqlConnection);
+            }
         }
-        public UserEntity UpdateProfile(UserEntity user)
+        public int UpdateProfile(UserEntity user)
         {
-            #region Definiciones
-            SqlConnection sqlConnection = DBConnection.DbInstance();
-            SqlCommand command = sqlCommand.InstanceCommand();
-            #endregion
-            #region Proceso
+            SqlConnection sqlConnection = dbConnection.GetDbConnection();
+            SqlCommand command = commandInstance.GetSqlCommand();
+
             try
             {
                 sqlConnection.Open();
                 command.Connection = sqlConnection;
-                command.CommandText = "exec UpdateUser";
+                command.CommandText = "UpdateUser";
                 command.CommandType = System.Data.CommandType.StoredProcedure;
+                command.Parameters.Clear();
                 command.Parameters.Add(new SqlParameter("@UserId", user.UserId));
                 command.Parameters.Add(new SqlParameter("@FirstName", user.FirstName));
                 command.Parameters.Add(new SqlParameter("@LastName", user.LastName));
@@ -135,78 +158,17 @@ namespace HBRTEST.DAL
                 command.Parameters.Add(new SqlParameter("@Email", user.Email));
                 command.Parameters.Add(new SqlParameter("@Password", PasswordEncrypt.Encrypt(user.Password)));
                 command.ExecuteNonQuery();
-                sqlConnection.Close();
-                return user;
+                CloseConnection(sqlConnection);
+                return 1;
             }
             catch
             {
-                sqlConnection.Close();
-                throw new Exception();
+                throw;
             }
-            #endregion
-        }
-        #endregion
-
-
-        #region Métodos Privados
-        private bool ValidateIfUserExists(string UserName)
-        {
-            SqlConnection sqlConnection = DBConnection.DbInstance();
-            SqlCommand command = sqlCommand.InstanceCommand();
-            try
+            finally
             {
-                if (string.IsNullOrEmpty(UserName))
-                {
-                    return false;
-                }
-                sqlConnection.Open();
-                command.Connection = sqlConnection;
-                command.CommandText = "exec ValidateIfUserExists";
-                command.CommandType = System.Data.CommandType.StoredProcedure;
-                command.Parameters.Add(new SqlParameter("@UserName", UserName));
-                sqlDataReader = command.ExecuteReader();
-                while (sqlDataReader.Read())
-                {
-                    if (!string.IsNullOrEmpty(sqlDataReader.GetString(0)))
-                    {
-                        sqlDataReader.Close();
-                        sqlConnection.Close();
-                        return true;
-                    }
-                }
-                sqlDataReader.Close();
-                sqlConnection.Close();
-                return false;
-            }
-            catch
-            {
-                sqlDataReader.Close();
-                sqlConnection.Close();
-                throw new Exception();
+                CloseConnection(sqlConnection);
             }
         }
-        #endregion
-        #endregion
-
-        #region Destructor
-        protected virtual void Dispose(bool disposing)
-        {
-            if (!this._disposed)
-            {
-                if (disposing)
-                {
-                    this.components.Dispose();
-                    this.components = null;
-                }
-            }
-            this._disposed = true;
-        }
-        public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-        ~UsersDAL() => Dispose(false);
-        #endregion
     }
 }

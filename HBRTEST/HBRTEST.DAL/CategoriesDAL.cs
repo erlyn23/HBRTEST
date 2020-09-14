@@ -3,37 +3,36 @@ using System.Collections.Generic;
 using System.Text;
 using System.Data.SqlClient;
 using HBRTEST.Entities;
-using System.ComponentModel;
 
 namespace HBRTEST.DAL
 {
-    public class CategoriesDAL: IDisposable
+    public class CategoriesDAL
     {
-        #region Definiciones
         SqlDataReader sqlDataReader;
-        private Component components = new Component();
-        private bool _disposed = false;
-        #endregion
-        #region Constructor
+        DBConnection dbConnection = DBConnection.DbConnectionInstance();
+        sqlCommand commandInstance = sqlCommand.InstanceCommand();
         public CategoriesDAL()
         {
 
         }
-        #endregion
-        #region Métodos
-        #region Métodos Públicos
+
+        private void CloseConnection(SqlConnection connection)
+        {
+            if (connection.State != System.Data.ConnectionState.Closed)
+                connection.Close();
+        }
+        
         public List<CategoryEntity> GetCategories()
         {
-            #region Definiciones
-            SqlConnection sqlConnection = DBConnection.DbInstance();
-            SqlCommand command = sqlCommand.InstanceCommand();
+            SqlConnection sqlConnection = dbConnection.GetDbConnection();
+            SqlCommand command = commandInstance.GetSqlCommand();
             List<CategoryEntity> lstCategories = new List<CategoryEntity>();
-            #endregion
-            #region Proceso
+            
             try
             {
                 sqlConnection.Open();
-                command.CommandText = "exec GetCategories";
+                command.Connection = sqlConnection;
+                command.CommandText = "GetCategories";
                 command.CommandType = System.Data.CommandType.StoredProcedure;
                 sqlDataReader = command.ExecuteReader();
                 while (sqlDataReader.Read())
@@ -44,37 +43,33 @@ namespace HBRTEST.DAL
                     category.Description = sqlDataReader.GetString(2);
                     lstCategories.Add(category);
                 }
-                if(lstCategories != null)
-                {
-                    sqlDataReader.Close();
-                    sqlConnection.Close();
-                    return lstCategories;
-                }
                 sqlDataReader.Close();
-                sqlConnection.Close();
-                return null;
+                CloseConnection(sqlConnection);
+                return lstCategories;
             }
             catch
             {
-                sqlConnection.Close();
-                throw new Exception();
+                throw;
             }
-            #endregion
+            finally
+            {
+                CloseConnection(sqlConnection);
+            }
         }
 
         public CategoryEntity GetCategoryById(int CategoryID)
         {
-            #region Definiciones
-            SqlConnection sqlConnection = DBConnection.DbInstance();
-            SqlCommand command = sqlCommand.InstanceCommand();
+            SqlConnection sqlConnection = dbConnection.GetDbConnection();
+            SqlCommand command = commandInstance.GetSqlCommand();
             CategoryEntity category = new CategoryEntity();
-            #endregion
-            #region Proceso
+            
             try
             {
                 sqlConnection.Open();
-                command.CommandText = "exec GetCategoryById";
+                command.Connection = sqlConnection;
+                command.CommandText = "GetCategoryById";
                 command.CommandType = System.Data.CommandType.StoredProcedure;
+                command.Parameters.Clear();
                 command.Parameters.Add(new SqlParameter("@CategoryID", CategoryID));
                 sqlDataReader = command.ExecuteReader();
                 while (sqlDataReader.Read())
@@ -83,124 +78,58 @@ namespace HBRTEST.DAL
                     category.CategoryName = sqlDataReader.GetString(1);
                     category.Description = sqlDataReader.GetString(2);
                 }
-                if (category != null)
-                {
-                    sqlDataReader.Close();
-                    sqlConnection.Close();
-                    return category;
-                }
                 sqlDataReader.Close();
-                sqlConnection.Close();
-                return null;
+                CloseConnection(sqlConnection);
+                return category;
             }
             catch
             {
-                sqlConnection.Close();
-                throw new Exception();
+                throw;
             }
-            #endregion
         }
-        public string CreateCategory(CategoryEntity category)
+        public int CreateCategory(CategoryEntity category)
         {
-            #region Definiciones
-            SqlConnection sqlConnection = DBConnection.DbInstance();
-            SqlCommand command = sqlCommand.InstanceCommand();
-            #endregion
-            #region Proceso
+            SqlConnection sqlConnection = dbConnection.GetDbConnection();
+            SqlCommand command = commandInstance.GetSqlCommand();
             try
             {
                 bool isCategoryNameExists = ValidateIfCategoryNameExists(category.CategoryName);
                 if (isCategoryNameExists)
                 {
-                    return "La categoría ya existe, intente con una nueva";
+                    return 0;
                 }
                 sqlConnection.Open();
                 command.Connection = sqlConnection;
-                command.CommandText = "exec CreateCategory";
+                command.CommandText = "CreateCategory";
                 command.CommandType = System.Data.CommandType.StoredProcedure;
+                command.Parameters.Clear();
                 command.Parameters.Add(new SqlParameter("@CategoryName", category.CategoryName));
                 command.Parameters.Add(new SqlParameter("@Description", category.Description));
                 command.ExecuteNonQuery();
-                sqlConnection.Close();
-                return "Categoría creada correctamente";
+                CloseConnection(sqlConnection);
+                return 1;
             }
             catch
             {
-                sqlConnection.Close();
-                throw new Exception();
+                throw;
             }
-            #endregion
+            finally
+            {
+                CloseConnection(sqlConnection);
+            }
         }
-        public bool UpdateCategory(CategoryEntity category)
-        {
-            #region Definiciones
-            SqlConnection sqlConnection = DBConnection.DbInstance();
-            SqlCommand command = sqlCommand.InstanceCommand();
-            #endregion
-            #region Proceso
-            try
-            {
-                sqlConnection.Open();
-                command.Connection = sqlConnection;
-                command.CommandText = "exec UpdateCategory";
-                command.CommandType = System.Data.CommandType.StoredProcedure;
-                command.Parameters.Add(new SqlParameter("@CategoryID", category.CategoryId));
-                command.Parameters.Add(new SqlParameter("@CategoryName", category.CategoryName));
-                command.Parameters.Add(new SqlParameter("@Description", category.Description));
-                command.ExecuteNonQuery();
-                sqlConnection.Close();
-                return true;
-            }
-            catch
-            {
-                sqlConnection.Close();
-                throw new Exception();
-            }
-            #endregion
-        }
-
-        public bool DeleteCategory(int CategoryID)
-        {
-            #region Definiciones
-            SqlConnection sqlConnection = DBConnection.DbInstance();
-            SqlCommand command = sqlCommand.InstanceCommand();
-            #endregion
-            #region Proceso
-            try
-            {
-                sqlConnection.Open();
-                command.Connection = sqlConnection;
-                command.CommandText = "exec DeleteCategory";
-                command.CommandType = System.Data.CommandType.StoredProcedure;
-                command.Parameters.Add(new SqlParameter("@CategoryID", CategoryID));
-                command.ExecuteNonQuery();
-                sqlConnection.Close();
-                return true;
-            }
-            catch
-            {
-                sqlConnection.Close();
-                throw new Exception();
-            }
-            #endregion
-
-        }
-        #endregion
-        #region Métodos Privados
         private bool ValidateIfCategoryNameExists(string CategoryName)
         {
 
-            #region Definiciones
-            SqlConnection sqlConnection = DBConnection.DbInstance();
-            SqlCommand command = sqlCommand.InstanceCommand();
-            #endregion
-            #region Proceso
-            try 
+            SqlConnection sqlConnection = dbConnection.GetDbConnection();
+            SqlCommand command = commandInstance.GetSqlCommand();
+            try
             {
                 sqlConnection.Open();
                 command.Connection = sqlConnection;
-                command.CommandText = "exec ValidateIfCategoryNameExists";
+                command.CommandText = "ValidateIfCategoryNameExists";
                 command.CommandType = System.Data.CommandType.StoredProcedure;
+                command.Parameters.Clear();
                 command.Parameters.Add(new SqlParameter("@CategoryName", CategoryName));
                 sqlDataReader = command.ExecuteReader();
                 while (sqlDataReader.Read())
@@ -208,41 +137,73 @@ namespace HBRTEST.DAL
                     if (!string.IsNullOrEmpty(sqlDataReader.GetString(0)))
                     {
                         sqlDataReader.Close();
-                        sqlConnection.Close();
+                        CloseConnection(sqlConnection);
                         return true;
                     }
                 }
+                sqlDataReader.Close();
+                CloseConnection(sqlConnection);
                 return false;
             }
             catch
             {
-                sqlDataReader.Close();
-                sqlConnection.Close();
-                throw new Exception();
+                throw;
             }
-            #endregion
-        }
-        #endregion
-        #endregion
-        #region Destructor
-        protected virtual void Dispose(bool disposing)
-        {
-            if (!this._disposed)
+            finally
             {
-                if (disposing)
-                {
-                    this.components.Dispose();
-                    this.components = null;
-                }
+                CloseConnection(sqlConnection);
             }
-            this._disposed = true;
         }
-        public void Dispose()
+        public int UpdateCategory(CategoryEntity category)
         {
-            Dispose(true);
-            GC.SuppressFinalize(this);
+            SqlConnection sqlConnection = dbConnection.GetDbConnection();
+            SqlCommand command = commandInstance.GetSqlCommand();
+            try
+            {
+                sqlConnection.Open();
+                command.Connection = sqlConnection;
+                command.CommandText = "UpdateCategory";
+                command.CommandType = System.Data.CommandType.StoredProcedure;
+                command.Parameters.Clear();
+                command.Parameters.Add(new SqlParameter("@CategoryID", category.CategoryId));
+                command.Parameters.Add(new SqlParameter("@CategoryName", category.CategoryName));
+                command.Parameters.Add(new SqlParameter("@Description", category.Description));
+                command.ExecuteNonQuery(); 
+                CloseConnection(sqlConnection);
+                return 1;
+            }
+            catch
+            {
+                CloseConnection(sqlConnection);
+                throw;
+            }
         }
-        ~CategoriesDAL() => Dispose(false);
-        #endregion
+
+        public bool DeleteCategory(int CategoryID)
+        {
+            SqlConnection sqlConnection = dbConnection.GetDbConnection();
+            SqlCommand command = commandInstance.GetSqlCommand();
+            try
+            {
+                sqlConnection.Open();
+                command.Connection = sqlConnection;
+                command.CommandText = "DeleteCategory";
+                command.CommandType = System.Data.CommandType.StoredProcedure;
+                command.Parameters.Clear();
+                command.Parameters.Add(new SqlParameter("@CategoryID", CategoryID));
+                command.ExecuteNonQuery();
+                CloseConnection(sqlConnection);
+                return true;
+            }
+            catch
+            {
+                throw;
+            }
+            finally
+            {
+                CloseConnection(sqlConnection);
+            }
+
+        }
     }
 }

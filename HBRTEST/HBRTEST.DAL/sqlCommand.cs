@@ -7,29 +7,27 @@ namespace HBRTEST.DAL
 {
     class sqlCommand
     {
-        #region Definiciones
-        private static SqlCommand command = null;
-        #endregion
+        private static sqlCommand commandInstance;
+        private static SqlCommand command = new SqlCommand();
 
-        #region Constructor
         private sqlCommand()
         {
 
         }
-        #endregion
-
-        #region Métodos
-        #region Métodos Públicos
-        public static SqlCommand InstanceCommand()
+        
+        public static sqlCommand InstanceCommand()
         {
-            if (command == null)
+            if (commandInstance == null)
             {
-                command = new SqlCommand();
-                return command;
+                commandInstance = new sqlCommand();
+                return commandInstance;
             }
+            return commandInstance;
+        }
+
+        public SqlCommand GetSqlCommand()
+        {
             return command;
         }
-        #endregion
-        #endregion
     }
 }

@@ -8,33 +8,31 @@ using System.ComponentModel;
 
 namespace HBRTEST.DAL
 {
-    public class ProductsDAL: IDisposable
+    public class ProductsDAL
     {
-        #region Definiciones
         SqlDataReader sqlDataReader;
-        private Component components = new Component();
-        private bool _disposed = false;
-        #endregion
-        #region Constructor
+        DBConnection dbConnection = DBConnection.DbConnectionInstance();
+        sqlCommand commandInstance = sqlCommand.InstanceCommand();
         public ProductsDAL()
         {
 
         }
-        #endregion
-        #region Métodos
-        #region Métodos públicos
+
+        private void CloseConnection(SqlConnection connection)
+        {
+            if (connection.State != System.Data.ConnectionState.Closed)
+                connection.Close();
+        }
         public List<ProductEntity> GetProducts()
         {
-            #region Definiciones
-            SqlConnection sqlConnection = DBConnection.DbInstance();
-            SqlCommand command = sqlCommand.InstanceCommand();
+            SqlConnection sqlConnection = dbConnection.GetDbConnection();
+            SqlCommand command = commandInstance.GetSqlCommand();
             List<ProductEntity> lstProducts = new List<ProductEntity>();
-            #endregion
-            #region Proceso
             try
             {
                 sqlConnection.Open();
-                command.CommandText = "exec GetProducts";
+                command.Connection = sqlConnection;
+                command.CommandText = "GetProducts";
                 command.CommandType = System.Data.CommandType.StoredProcedure;
                 sqlDataReader = command.ExecuteReader();
                 while (sqlDataReader.Read())
@@ -42,76 +40,66 @@ namespace HBRTEST.DAL
                     ProductEntity product = new ProductEntity();
                     product.ProductId = sqlDataReader.GetInt32(0);
                     product.CategoryId = sqlDataReader.GetInt32(1);
-                    product.ProductName = sqlDataReader.GetString(3);
-                    product.CategoryName = sqlDataReader.GetString(4);
-                    product.Description = sqlDataReader.GetString(5);
-                    product.Existence = sqlDataReader.GetInt32(6);
-                    product.Price = sqlDataReader.GetFloat(7);
-                    product.Creation_Date = sqlDataReader.GetDateTime(8);
-                    product.Expire_Date = sqlDataReader.GetDateTime(9);
+                    product.ProductName = sqlDataReader.GetString(2);
+                    product.CategoryName = sqlDataReader.GetString(3);
+                    product.Description = sqlDataReader.GetString(4);
+                    product.Existence = sqlDataReader.GetInt32(5);
+                    product.Price = float.Parse(sqlDataReader.GetDecimal(6).ToString());
+                    product.Creation_Date = sqlDataReader.GetDateTime(7);
+                    product.Expire_Date = sqlDataReader.GetDateTime(8);
                     lstProducts.Add(product);
                 }
-                if(lstProducts.Count > 0)
-                {
-                    sqlDataReader.Close();
-                    sqlConnection.Close();
-                    return lstProducts;
-                }
                 sqlDataReader.Close();
-                sqlConnection.Close();
-                return null;
+                CloseConnection(sqlConnection);
+                return lstProducts;
             }
             catch
             {
-                sqlConnection.Close();
-                throw new Exception();
+                throw;
             }
-            #endregion
+            finally
+            {
+                CloseConnection(sqlConnection);
+            }
         }
-
         public ProductEntity GetProductById(int ProductID)
         {
-            #region Definiciones
-            SqlConnection sqlConnection = DBConnection.DbInstance();
-            SqlCommand command = sqlCommand.InstanceCommand();
+            SqlConnection sqlConnection = dbConnection.GetDbConnection();
+            SqlCommand command = commandInstance.GetSqlCommand();
             ProductEntity product = new ProductEntity();
-            #endregion
-            #region Proceso
             try
             {
                 sqlConnection.Open();
-                command.CommandText = "exec GetProductById";
+                command.Connection = sqlConnection;
+                command.CommandText = "GetProductById";
                 command.CommandType = System.Data.CommandType.StoredProcedure;
+                command.Parameters.Clear();
                 command.Parameters.Add(new SqlParameter("@ProductID", ProductID));
                 sqlDataReader = command.ExecuteReader();
                 while (sqlDataReader.Read())
                 {
                     product.ProductId = sqlDataReader.GetInt32(0);
                     product.CategoryId = sqlDataReader.GetInt32(1);
-                    product.ProductName = sqlDataReader.GetString(3);
-                    product.CategoryName = sqlDataReader.GetString(4);
-                    product.Description = sqlDataReader.GetString(5);
-                    product.Existence = sqlDataReader.GetInt32(6);
-                    product.Price = sqlDataReader.GetFloat(7);
-                    product.Creation_Date = sqlDataReader.GetDateTime(8);
-                    product.Expire_Date = sqlDataReader.GetDateTime(9);
-                }
-                if (product != null)
-                {
-                    sqlDataReader.Close();
-                    sqlConnection.Close();
-                    return product;
+                    product.ProductName = sqlDataReader.GetString(2);
+                    product.CategoryName = sqlDataReader.GetString(3);
+                    product.Description = sqlDataReader.GetString(4);
+                    product.Existence = sqlDataReader.GetInt32(5);
+                    product.Price = float.Parse(sqlDataReader.GetDecimal(6).ToString());
+                    product.Creation_Date = sqlDataReader.GetDateTime(7);
+                    product.Expire_Date = sqlDataReader.GetDateTime(8);
                 }
                 sqlDataReader.Close();
-                sqlConnection.Close();
-                return null;
+                CloseConnection(sqlConnection);
+                return product;
             }
             catch
             {
-                sqlConnection.Close();
-                throw new Exception();
+                throw;
             }
-            #endregion
+            finally
+            {
+                CloseConnection(sqlConnection);
+            }
         }
 
         public List<ProductEntity> FilterProductsByCategoryName(string CategoryName)
@@ -128,20 +116,17 @@ namespace HBRTEST.DAL
             return filteredProducts.ToList();
         }
 
-        public bool CreateProduct(ProductEntity product)
+        public int CreateProduct(ProductEntity product)
         {
-            #region Definiciones
-            SqlConnection sqlConnection = DBConnection.DbInstance();
-            SqlCommand command = sqlCommand.InstanceCommand();
-            #endregion
-            #region Proceso
+            SqlConnection sqlConnection = dbConnection.GetDbConnection();
+            SqlCommand command = commandInstance.GetSqlCommand();
             try
             {
                 sqlConnection.Open();
                 command.Connection = sqlConnection;
-                command.CommandText = "exec CreateProduct";
+                command.CommandText = "CreateProduct";
                 command.CommandType = System.Data.CommandType.StoredProcedure;
-                command.Parameters.Add(new SqlParameter("@ProductID",product.ProductId));
+                command.Parameters.Clear();
                 command.Parameters.Add(new SqlParameter("@CategoryID",product.CategoryId));
                 command.Parameters.Add(new SqlParameter("@ProductName",product.ProductName));
                 command.Parameters.Add(new SqlParameter("@Description", product.Description));
@@ -150,30 +135,31 @@ namespace HBRTEST.DAL
                 command.Parameters.Add(new SqlParameter("@Creation_Date",product.Creation_Date));
                 command.Parameters.Add(new SqlParameter("@Expire_Date",product.Expire_Date));
                 command.ExecuteNonQuery();
-                sqlConnection.Close();
-                return true;
+                CloseConnection(sqlConnection);
+                return 1;
             }
             catch
             {
-                sqlConnection.Close();
-                throw new Exception();
+                throw;
             }
-            #endregion
+            finally
+            {
+                CloseConnection(sqlConnection);
+            }
         }
 
-        public bool UpdateProduct(ProductEntity product)
+        public int UpdateProduct(ProductEntity product)
         {
-            #region Definiciones
-            SqlConnection sqlConnection = DBConnection.DbInstance();
-            SqlCommand command = sqlCommand.InstanceCommand();
-            #endregion
-            #region Proceso
+            SqlConnection sqlConnection = dbConnection.GetDbConnection();
+            SqlCommand command = commandInstance.GetSqlCommand();
+
             try
             {
                 sqlConnection.Open();
                 command.Connection = sqlConnection;
-                command.CommandText = "exec UpdateProduct";
+                command.CommandText = "UpdateProduct";
                 command.CommandType = System.Data.CommandType.StoredProcedure;
+                command.Parameters.Clear();
                 command.Parameters.Add(new SqlParameter("@ProductID", product.ProductId));
                 command.Parameters.Add(new SqlParameter("@CategoryID", product.CategoryId));
                 command.Parameters.Add(new SqlParameter("@ProductName", product.ProductName));
@@ -183,62 +169,42 @@ namespace HBRTEST.DAL
                 command.Parameters.Add(new SqlParameter("@Creation_Date", product.Creation_Date));
                 command.Parameters.Add(new SqlParameter("@Expire_Date", product.Expire_Date));
                 command.ExecuteNonQuery();
-                sqlConnection.Close();
-                return true;
+                CloseConnection(sqlConnection);
+                return 1;
             }
             catch
             {
-                sqlConnection.Close();
-                throw new Exception();
+                throw;
             }
-            #endregion
+            finally
+            {
+                CloseConnection(sqlConnection);
+            }
         }
         public bool DeleteProduct(int ProductID)
         {
-            #region Definiciones
-            SqlConnection sqlConnection = DBConnection.DbInstance();
-            SqlCommand command = sqlCommand.InstanceCommand();
-            #endregion
-            #region Proceso
+            SqlConnection sqlConnection = dbConnection.GetDbConnection();
+            SqlCommand command = commandInstance.GetSqlCommand();
             try
             {
                 sqlConnection.Open();
                 command.Connection = sqlConnection;
-                command.CommandText = "exec DeleteProduct";
+                command.CommandText = "DeleteProduct";
                 command.CommandType = System.Data.CommandType.StoredProcedure;
+                command.Parameters.Clear();
                 command.Parameters.Add(new SqlParameter("@ProductID", ProductID));
                 command.ExecuteNonQuery();
-                sqlConnection.Close();
+                CloseConnection(sqlConnection);
                 return true;
             }
             catch
             {
-                sqlConnection.Close();
-                throw new Exception();
+                throw;
             }
-            #endregion
-        }
-        #endregion
-        #endregion
-        #region Destructor
-        protected virtual void Dispose(bool disposing)
-        {
-            if (!this._disposed)
+            finally
             {
-                if (disposing)
-                {
-                    this.components.Dispose();
-                    this.components = null;
-                }
+                CloseConnection(sqlConnection);
             }
-            this._disposed = true;
         }
-        public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-        ~ProductsDAL() => Dispose(false);
-        #endregion
     }
 }

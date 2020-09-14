@@ -34,7 +34,7 @@ CategoryID int not null,
 ProductName varchar(30) not null,
 Description varchar(150),
 Existence int not null,
-Price decimal(8,2),
+Price decimal(16,2),
 Creation_Date datetime,
 Expire_Date datetime,
 constraint PK_dtProducts primary key(ProductID),
@@ -43,16 +43,16 @@ constraint FK_dtProducts foreign key(CategoryID) references dtCategories(Categor
 go
 
 --User Table Operations
-create procedure CreateUser(@FirstName as varchar, @LastName as varchar, 
-@CellPhone as varchar, @Genre as char,@Email as varchar, @UserName as varchar, @Password as varchar)
+create procedure CreateUser(@FirstName as varchar(40), @LastName as varchar(40), 
+@CellPhone as varchar(20), @Genre as char(1),@Email as varchar(40), @UserName as varchar(10), @Password as varchar(max))
 as
 begin 
 	insert into dtUsers values(@FirstName, @LastName, @CellPhone, @Genre, @Email, @UserName, @Password)
 end
 go
 
-create procedure UpdateUser(@UserID as int, @FirstName as varchar, @LastName as varchar, 
-@CellPhone as varchar, @Genre as char,@Email as varchar, @UserName as varchar, @Password as varchar)
+create procedure UpdateUser(@UserID as int, @FirstName as varchar(40), @LastName as varchar(40), 
+@CellPhone as varchar(20), @Genre as char(1),@Email as varchar(40), @UserName as varchar(10), @Password as varchar(max))
 as
 begin
 	update dtUsers set FirstName=@FirstName, LastName=@LastName, CellPhone=@CellPhone,
@@ -60,7 +60,7 @@ begin
 end
 go
 
-create procedure GetUserByUserNameAndPassword(@UserName as varchar, @Password as varchar)
+create procedure GetUserByUserNameAndPassword(@UserName as varchar(10), @Password as varchar(max))
 as
 begin
 	select*from dtUsers where UserName=@UserName and Password=@Password
@@ -111,15 +111,15 @@ end
 go
 
 --Products Table Operations
-create procedure CreateProduct(@CategoryID as int, @ProductName as varchar, @Description as varchar, 
-@Existence as int, @Price as decimal, @Creation_Date as datetime, @Expire_Date as datetime)
+create procedure CreateProduct(@CategoryID as int, @ProductName as varchar(30), @Description as varchar(150), 
+@Existence as int, @Price as decimal(16,2), @Creation_Date as datetime, @Expire_Date as datetime)
 as 
 begin
 	insert into dtProducts values(@CategoryID, @ProductName, @Description, @Existence, @Price, @Creation_Date, @Expire_Date)
 end
 go
 
-create procedure UpdateProduct(@ProductID as int,@CategoryID as int, @ProductName as varchar, @Description as varchar, 
+create procedure UpdateProduct(@ProductID as int, @CategoryID as int, @ProductName as varchar(30), @Description as varchar(150), 
 @Existence as int, @Price as decimal, @Creation_Date as datetime, @Expire_Date as datetime)
 as 
 begin

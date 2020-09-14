@@ -11,7 +11,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HBRTEST.Entities", "HBRTEST
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HBRTEST.BLL", "HBRTEST.BLL\HBRTEST.BLL.csproj", "{B8433AA3-6E9C-45A8-9028-BB464E0BEE0F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HBRTEST.Utilities", "HBRTEST.Utilities\HBRTEST.Utilities.csproj", "{A61F9F3F-8373-490F-91E5-892C6C9D0F55}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HBRTEST.Utilities", "HBRTEST.Utilities\HBRTEST.Utilities.csproj", "{A61F9F3F-8373-490F-91E5-892C6C9D0F55}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HBRTEST.UnitTest", "HBRTEST.UnitTest\HBRTEST.UnitTest.csproj", "{1072809D-F606-4A60-A6D9-1EFD33310B42}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +41,10 @@ Global
 		{A61F9F3F-8373-490F-91E5-892C6C9D0F55}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A61F9F3F-8373-490F-91E5-892C6C9D0F55}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A61F9F3F-8373-490F-91E5-892C6C9D0F55}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1072809D-F606-4A60-A6D9-1EFD33310B42}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1072809D-F606-4A60-A6D9-1EFD33310B42}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1072809D-F606-4A60-A6D9-1EFD33310B42}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1072809D-F606-4A60-A6D9-1EFD33310B42}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

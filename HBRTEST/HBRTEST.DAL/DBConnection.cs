@@ -8,31 +8,27 @@ namespace HBRTEST.DAL
 {
     class DBConnection
     {
-        #region Definiciones
-        private static SqlConnection sqlConnection = null;
-        private static readonly string connectionString = ConfigurationManager.ConnectionStrings["Connection"].ConnectionString;
-        #endregion
-
-        #region Constructor
+        
+        private static DBConnection dbConnection;
+        private static readonly string connectionString = "Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=HBRTEST;Integrated Security=True;";
+        private static SqlConnection sqlConnection = new SqlConnection(connectionString);
         private DBConnection()
         {
 
         }
-        #endregion
 
-        #region Métodos
-        #region Métodos Públicos
-        public static SqlConnection DbInstance()
+        public static DBConnection DbConnectionInstance()
         {
-            if(sqlConnection == null && string.IsNullOrEmpty(sqlConnection.ConnectionString))
+            if(dbConnection == null)
             {
-                sqlConnection = new SqlConnection();
-                sqlConnection.ConnectionString = connectionString;
-                return sqlConnection;
+                dbConnection = new DBConnection();
+                return dbConnection;
             }
+            return dbConnection;
+        }
+        public SqlConnection GetDbConnection()
+        {
             return sqlConnection;
         }
-        #endregion
-        #endregion
     }
 }

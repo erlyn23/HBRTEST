@@ -19,16 +19,14 @@ namespace HBRTEST.BLL
             UserEntity user = _usersRepository.SignIn(UserName, Password);
             return user;
         }
-        public int CreateUser(UserEntity user)
+        public void CreateUser(UserEntity user)
         {
-            int creationResult = _usersRepository.CreateUser(user);
-            return creationResult;
+            _usersRepository.CreateUser(user);
         }
 
-        public int UpdateProfile(UserEntity user)
+        public void UpdateProfile(UserEntity user)
         {
-            int updateResult = _usersRepository.UpdateProfile(user);
-            return updateResult;
+            _usersRepository.UpdateProfile(user);
         }
     }
 }

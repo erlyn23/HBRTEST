@@ -206,7 +206,7 @@ namespace HBRTEST.DAL
                 }
                 else if (string.IsNullOrEmpty(category.CategoryName))
                 {
-                    throw new PersonalizedException("Debes insertar al menos el nombre de la categoría");
+                    throw new PersonalizedException("Debes ingresar una categoría");
                 }
                 else
                 {

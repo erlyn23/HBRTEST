@@ -2,3 +2,17 @@ C:\Users\Lenovo\Documents\Visual Studio 2019\Projects\HBRTEST\HBRTEST\HBRTEST.BL
 C:\Users\Lenovo\Documents\Visual Studio 2019\Projects\HBRTEST\HBRTEST\HBRTEST.BLL\obj\Debug\netstandard2.0\HBRTEST.BLL.AssemblyInfoInputs.cache
 C:\Users\Lenovo\Documents\Visual Studio 2019\Projects\HBRTEST\HBRTEST\HBRTEST.BLL\obj\Debug\netstandard2.0\HBRTEST.BLL.AssemblyInfo.cs
 C:\Users\Lenovo\Documents\Visual Studio 2019\Projects\HBRTEST\HBRTEST\HBRTEST.BLL\obj\Debug\netstandard2.0\HBRTEST.BLL.csproj.CoreCompileInputs.cache
+C:\Users\Lenovo\Documents\Visual Studio 2019\Projects\HBRTEST\HBRTEST\HBRTEST.BLL\bin\Debug\netstandard2.0\HBRTEST.BLL.deps.json
+C:\Users\Lenovo\Documents\Visual Studio 2019\Projects\HBRTEST\HBRTEST\HBRTEST.BLL\bin\Debug\netstandard2.0\HBRTEST.BLL.dll
+C:\Users\Lenovo\Documents\Visual Studio 2019\Projects\HBRTEST\HBRTEST\HBRTEST.BLL\bin\Debug\netstandard2.0\HBRTEST.BLL.pdb
+C:\Users\Lenovo\Documents\Visual Studio 2019\Projects\HBRTEST\HBRTEST\HBRTEST.BLL\bin\Debug\netstandard2.0\HBRTEST.DAL.dll
+C:\Users\Lenovo\Documents\Visual Studio 2019\Projects\HBRTEST\HBRTEST\HBRTEST.BLL\bin\Debug\netstandard2.0\HBRTEST.Entities.dll
+C:\Users\Lenovo\Documents\Visual Studio 2019\Projects\HBRTEST\HBRTEST\HBRTEST.BLL\bin\Debug\netstandard2.0\HBRTEST.ErrorHandling.dll
+C:\Users\Lenovo\Documents\Visual Studio 2019\Projects\HBRTEST\HBRTEST\HBRTEST.BLL\bin\Debug\netstandard2.0\HBRTEST.Utilities.dll
+C:\Users\Lenovo\Documents\Visual Studio 2019\Projects\HBRTEST\HBRTEST\HBRTEST.BLL\bin\Debug\netstandard2.0\HBRTEST.DAL.pdb
+C:\Users\Lenovo\Documents\Visual Studio 2019\Projects\HBRTEST\HBRTEST\HBRTEST.BLL\bin\Debug\netstandard2.0\HBRTEST.Entities.pdb
+C:\Users\Lenovo\Documents\Visual Studio 2019\Projects\HBRTEST\HBRTEST\HBRTEST.BLL\bin\Debug\netstandard2.0\HBRTEST.ErrorHandling.pdb
+C:\Users\Lenovo\Documents\Visual Studio 2019\Projects\HBRTEST\HBRTEST\HBRTEST.BLL\bin\Debug\netstandard2.0\HBRTEST.Utilities.pdb
+C:\Users\Lenovo\Documents\Visual Studio 2019\Projects\HBRTEST\HBRTEST\HBRTEST.BLL\obj\Debug\netstandard2.0\HBRTEST.BLL.csproj.CopyComplete
+C:\Users\Lenovo\Documents\Visual Studio 2019\Projects\HBRTEST\HBRTEST\HBRTEST.BLL\obj\Debug\netstandard2.0\HBRTEST.BLL.dll
+C:\Users\Lenovo\Documents\Visual Studio 2019\Projects\HBRTEST\HBRTEST\HBRTEST.BLL\obj\Debug\netstandard2.0\HBRTEST.BLL.pdb

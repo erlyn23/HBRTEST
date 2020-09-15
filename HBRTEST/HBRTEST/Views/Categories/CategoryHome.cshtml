@@ -1,0 +1,67 @@
+﻿@model HBRTEST.Models.CategoryModel
+@{
+    ViewBag.Title = "Administrar categorías";
+    Layout = "~/Views/Shared/_SystemLayout.cshtml";
+}
+    <script src="~/Scripts/Views/CategoryHome.js"></script>    
+
+    <div class="container">
+        <div class="row mt-4">
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-header text-center"><h3>Crear categoría</h3></div>
+                    <div class="card-body">
+                        <form>
+                            <div class="form-group">
+                                <label for="CategoryName">Categoría:</label>
+                                @Html.TextBoxFor(category => category.CategoryName, new { placeholder = "Escribe el nombre de la categoría", @class = "form-control" })
+
+                            </div>
+                            <div class="form-group">
+                                <label for="Description">Descripción:</label>
+                                @Html.TextAreaFor(category => category.Description, new { placeholder = "Escribe la descripción de la categoría", style = "resize: none;", @class = "form-control" })
+
+                            </div>
+                            <div class="form-group text-center">
+                                <button type="button" class="btn btn-block btn-success">Enviar</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-header text-center"><h3>Listado de categorías</h3></div>
+                    <div class="card-body">
+                        <table class="table table-hover table-sm-responsive">
+                            <thead>
+                                <tr>
+                                    <th>Id Categoría</th>
+                                    <th>Categoría</th>
+                                    <th>Descripción</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var category in Model.lstCategories)
+                                {
+                                    <tr>
+                                        <td>@category.CategoryId</td>
+                                        <td>@category.CategoryName</td>
+                                        <td>@category.Description</td>
+                                        <td>
+                                            <button class="btn btn-primary" id="editButton"><i class="fas fa-edit"></i></button>
+                                            &nbsp;
+                                            <button class="btn btn-danger" id="deleteButton"><i class="fas fa-trash-alt"></i></button>
+                                        </td>
+                                    </tr>
+                                }
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+

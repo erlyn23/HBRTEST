@@ -7,132 +7,39 @@ using HBRTEST.Entities;
 
 namespace HBRTEST.BLL
 {
-    public class CategoriesBLL: IDisposable
+    public class CategoriesBLL
     {
-        #region Definiciones
-        private Component components = new Component();
-        private bool _disposed = false;
-        #endregion
-
-        #region Constructor
+        CategoriesDAL _categoriesRepository = new CategoriesDAL();
         public CategoriesBLL()
         {
 
         }
-        #endregion
-
-        #region Métodos
-        #region Métodos públicos
+        
         public List<CategoryEntity> GetCategories()
         {
-            try
-            {
-                using(CategoriesDAL _categoriesRepository = new CategoriesDAL())
-                {
-                    List<CategoryEntity> lstCategories = _categoriesRepository.GetCategories();
-                    if(lstCategories != null)
-                    {
-                        return lstCategories;
-                    }
-                    return null;
-                }
-            }
-            catch
-            {
-                throw new Exception();
-            }
+            List<CategoryEntity> lstCategories = _categoriesRepository.GetCategories();
+            return lstCategories;
         }
 
         public CategoryEntity GetCategoryById(int CategoryID)
         {
-            try
-            {
-                using(CategoriesDAL _categoriesRepostiroy = new CategoriesDAL())
-                {
-                    CategoryEntity category = _categoriesRepostiroy.GetCategoryById(CategoryID);
-                    if(category != null)
-                    {
-                        return category;
-                    }
-                    return null;
-                }
-            }
-            catch
-            {
-                throw new Exception();
-            }
+            CategoryEntity category = _categoriesRepository.GetCategoryById(CategoryID);
+            return category;
         }
 
-        public string CreateCategory(CategoryEntity category)
+        public void CreateCategory(CategoryEntity category)
         {
-            try
-            {
-                using(CategoriesDAL _categoriesRepository = new CategoriesDAL())
-                {
-                    string categoryResult = _categoriesRepository.CreateCategory(category);
-                    return categoryResult;
-                }
-            }
-            catch
-            {
-                throw new Exception();
-            }
+            _categoriesRepository.CreateCategory(category);
         }
 
-        public bool UpdateCategory(CategoryEntity category)
+        public void UpdateCategory(CategoryEntity category)
         {
-            try
-            {
-                using(CategoriesDAL _categoriesRepository = new CategoriesDAL())
-                {
-                    bool isCategoryUpdated = _categoriesRepository.UpdateCategory(category);
-                    return isCategoryUpdated;
-                }
-            }
-            catch
-            {
-                throw new Exception();
-            }
+            _categoriesRepository.UpdateCategory(category);
         }
 
-        public bool DeleteCategory(int CategoryID)
+        public void DeleteCategory(int CategoryID)
         {
-            try
-            {
-                using(CategoriesDAL _categoriesRepository = new CategoriesDAL())
-                {
-                    bool isCategoryDeleted = _categoriesRepository.DeleteCategory(CategoryID);
-                    return isCategoryDeleted;
-                }
-            }
-            catch
-            {
-                throw new Exception();
-            }
+           _categoriesRepository.DeleteCategory(CategoryID);
         }
-
-        #endregion
-        #endregion
-
-        #region Destructor
-        protected virtual void Dispose(bool disposing)
-        {
-            if (!this._disposed)
-            {
-                if (disposing)
-                {
-                    this.components.Dispose();
-                    this.components = null;
-                }
-            }
-            this._disposed = true;
-        }
-        public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-        ~CategoriesBLL() => Dispose(false);
-        #endregion
     }
 }

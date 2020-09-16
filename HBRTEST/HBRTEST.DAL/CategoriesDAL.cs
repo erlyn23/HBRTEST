@@ -35,6 +35,7 @@ namespace HBRTEST.DAL
                 command.Connection = sqlConnection;
                 command.CommandText = "GetCategories";
                 command.CommandType = System.Data.CommandType.StoredProcedure;
+                command.Parameters.Clear();
                 sqlDataReader = command.ExecuteReader();
                 while (sqlDataReader.Read())
                 {

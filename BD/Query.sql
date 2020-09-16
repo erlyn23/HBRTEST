@@ -82,7 +82,7 @@ begin
 end
 go
 
-create procedure UpdateCategory(@CategoryID as int, @CategoryName as varchar, @Description as varchar)
+create procedure UpdateCategory(@CategoryID as int, @CategoryName as varchar(30), @Description as varchar(150))
 as
 begin
 	update dtCategories set CategoryName=@CategoryName, Description=@Description where CategoryID=@CategoryID

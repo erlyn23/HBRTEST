@@ -23,9 +23,9 @@ namespace HBRTEST.Controllers
                 CategoryEntity category = _categoryLogic.GetCategoryById(CategoryID);
                 return Json(category);
             }
-            catch (Exception exception)
+            catch(PersonalizedException personalizedException)
             {
-                throw new PersonalizedException(exception.Message);
+                return Json(personalizedException.Message);
             }
         }
         public ActionResult CategoryHome()
@@ -42,14 +42,10 @@ namespace HBRTEST.Controllers
                 _categoryLogic.CreateCategory(categoryModel);
                 return Json("Categoría creada correctamente");
             }
-            catch(Exception exception)
+            catch(PersonalizedException personalizedException)
             {
-                throw new PersonalizedException(exception.Message);
+                return Json(personalizedException.Message);
             }
-        }
-        public ActionResult UpdateCategory()
-        {
-            return View();
         }
 
         [HttpPost]
@@ -60,9 +56,23 @@ namespace HBRTEST.Controllers
                 _categoryLogic.UpdateCategory(categoryModel);
                 return Json("Categoría actualizada correctamente");
             }
-            catch(Exception exception)
+            catch(PersonalizedException personalizedException)
             {
-                throw new PersonalizedException(exception.Message);
+                return Json(personalizedException.Message);
+            }
+        }
+
+        [HttpPost]
+        public ActionResult DeleteCategory(int CategoryID)
+        {
+            try
+            {
+                _categoryLogic.DeleteCategory(CategoryID);
+                return Json("Categoría eliminada correctamente");
+            }
+            catch(PersonalizedException personalizedException)
+            {
+                return Json(personalizedException.Message);
             }
         }
     }

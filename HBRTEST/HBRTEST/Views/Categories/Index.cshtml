@@ -1,0 +1,73 @@
+﻿@model HBRTEST.Models.CategoryModel
+@{
+    ViewBag.Title = "Administrar categorías";
+    Layout = "~/Views/Shared/_SystemLayout.cshtml";
+}
+<script src="~/Scripts/Views/Categories/Script.js"></script>
+<script src="~/Scripts/Views/request.js"></script>
+
+<div class="container">
+    <div class="row mt-4">
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-header text-center"><h3 id="titleText">Crear categoría</h3></div>
+                <div class="card-body">
+                    <form>
+                        <div class="form-group d-none">
+                            @Html.HiddenFor(category=>category.CategoryId)
+                        </div>
+                        <div class="form-group">
+                            <label for="CategoryName">Categoría:</label>
+                            @Html.TextBoxFor(category => category.CategoryName, new { placeholder = "Escribe el nombre de la categoría", @class = "form-control" })
+                            <div class="alert alert-danger d-none" id="validationMessageCategoryName" role="alert">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="Description">Descripción:</label>
+                            @Html.TextAreaFor(category => category.Description, new { placeholder = "Escribe la descripción de la categoría", style = "resize: none;", @class = "form-control" })
+
+                        </div>
+                        <div class="form-group text-center">
+                            <button type="button" class="btn btn-block btn-success" id="CreateCategory">Enviar</button>
+                            <button type="button" class="btn btn-block btn-danger" id="CancelCreateUpdate">Cancelar</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header text-center"><h3>Listado de categorías</h3></div>
+                <div class="card-body">
+                    <table class="table table-hover table-sm-responsive">
+                        <thead>
+                            <tr>
+                                <th>Id Categoría</th>
+                                <th>Categoría</th>
+                                <th>Descripción</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var category in Model.LstCategories)
+                            {
+                                <tr>
+                                    <td>@category.CategoryId</td>
+                                    <td>@category.CategoryName</td>
+                                    <td>@category.Description</td>
+                                    <td>
+                                        <button type="button" class="btn btn-primary" id="editButton" onclick="GetCategory(@category.CategoryId)"><i class="fas fa-edit"></i></button>
+                                        &nbsp;
+                                        <button type="button" class="btn btn-danger" id="deleteButton" onclick="DeleteCategory(@category.CategoryId)"><i class="fas fa-trash-alt"></i></button>
+                                    </td>
+                                </tr>
+                            }
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

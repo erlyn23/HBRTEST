@@ -1,0 +1,166 @@
+﻿@model HBRTEST.Models.ProductsModel
+@{
+    ViewBag.Title = "Administración de productos";
+    Layout = "~/Views/Shared/_SystemLayout.cshtml";
+
+    HBRTEST.BLL.CategoriesBLL categoryLogic = new HBRTEST.BLL.CategoriesBLL();
+    HBRTEST.Models.CategoryModel categoryModel = new HBRTEST.Models.CategoryModel();
+
+    categoryModel.LstCategories = categoryLogic.GetCategories();
+}
+
+    <style type="text/css">
+        
+        input::-webkit-outer-spin-button,
+        input::-webkit-inner-spin-button {
+           -webkit-appearance: none;
+           margin: 0;
+        }
+        input[type=number] {
+            -moz-appearance: textfield;
+        }
+    </style>
+    
+    <script src="~/Scripts/Views/request.js"></script>
+    <script src="~/Scripts/Views/Products/Script.js"></script>
+
+    <div class="container">
+        <div class="row mt-3">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header text-center">
+                    <h3 id="titleText">Registrar producto</h3>
+                    </div>
+                    <div class="card-body">
+                        <form>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="form-group d-none">
+                                        @Html.HiddenFor(product => product.ProductId)
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="ProductName">Nombre del producto <small class="text-danger">*</small></label>
+                                        @Html.TextBoxFor(product => product.ProductName, new { @class = "form-control", placeholder = "Escribe el nombre del producto" })
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="CategoryId">Cateogoría <small class="text-danger">*</small></label>
+                                        <select name="CategoryId" id="CategoryId" class="form-control">
+                                            <option value="" disabled>Escoge una categoría</option>
+                                            @foreach (var category in categoryModel.LstCategories)
+                                            {
+                                                <option value="@category.CategoryId">@category.CategoryName</option>
+                                            }
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="ProductName">Descripción del producto</label>
+                                        @Html.TextAreaFor(product => product.Description, new { @class = "form-control", style = "resize: none;", placeholder = "Escribe la descripción del producto" })
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label for="Existence">Existencia <small class="text-danger">*</small></label>
+                                        @Html.TextBoxFor(product => product.Existence, new { @class = "form-control", type = "number", placeholder = "Escribe la cantidad de productos existentes" })
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label for="Price">Precio</label>
+                                        @Html.TextBoxFor(product => product.Price, new { @class = "form-control", type = "number", placeholder = "Escribe el precio" })
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label for="Creation_Date">Fecha de creación</label>
+                                        @Html.TextBoxFor(product => product.Creation_Date, new { @class = "form-control", type = "date", placeholder = "Escribe la fecha de creación del producto" })
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label for="Expire_Date">Fecha de vencimiento</label>
+                                        @Html.TextBoxFor(product => product.Expire_Date, new { @class = "form-control", type = "date", placeholder = "Escribe la fecha de vencimiento del producto" })
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="alert alert-danger d-none" role="alert" id="ValidationMessage"></div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-3"></div>
+                                <div class="col-md-3">
+                                    <button type="button" class="btn btn-success btn-block" id="CreateProduct">Enviar</button>
+                                </div>
+                                <div class="col-md-3">
+                                    <button type="button" class="btn btn-cancel btn-block btn-danger" id="CancelCreateUpdateProduct">Cancelar</button>
+                                </div>
+                                <div class="col-md-3"></div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>        
+        </div>
+        <div class="row mt-3">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header text-center">
+                        <h3>Listado de productos</h3>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <label for="Filter">Filtrar por:</label>
+                                <select name="Filter" id="Filter" class="form-control">
+                                    <option value="" disabled>Filtrar por</option>
+                                    <option value="Category">Categoría</option>
+                                    <option value="Product">Producto</option>
+                                </select>
+                            </div>
+                            <div class="col-md-8">
+                                <label for="Search">Búsqueda:</label>
+                                <input type="text" placeholder="Escribe la búsqueda" name="Search" id="Search" class="form-control" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <table class="table table-hover table-responsive-md" id="tableData">
+                            <thead>
+                                <tr>
+                                    <th>No. Producto</th>
+                                    <th>Producto</th>
+                                    <th>Categoría</th>
+                                    <th>Precio</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tableContent">
+                                @foreach (var product in Model.LstProducts)
+                                {
+                                    <tr>
+                                        <td>@product.ProductId</td>
+                                        <td>@product.ProductName</td>
+                                        <td>@product.CategoryName</td>
+                                        <td>RD$@product.Price</td>
+                                        <td>
+                                            <a class="btn btn-success" href="/Products/DetailsProduct?ProductId=@product.ProductId"><i class="fas fa-eye"></i></a>
+                                            &nbsp;
+                                            <button type="button" class="btn btn-primary" onclick="GetProduct(@product.ProductId)"><i class="fas fa-edit"></i></button>
+                                            &nbsp;
+                                            <button type="button" class="btn btn-danger" onclick="DeleteProduct(@product.ProductId)"><i class="fas fa-trash"></i></button>
+                                        </td>
+                                    </tr>
+                                }
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>

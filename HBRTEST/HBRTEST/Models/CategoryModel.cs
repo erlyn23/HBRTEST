@@ -8,11 +8,11 @@ namespace HBRTEST.Models
 {
     public class CategoryModel: CategoryEntity
     {
-        public List<CategoryEntity> lstCategories { get; set; }
+        public List<CategoryEntity> LstCategories { get; set; }
 
         public CategoryModel()
         {
-            lstCategories = new List<CategoryEntity>();
+            LstCategories = new List<CategoryEntity>();
         }
     }
 }

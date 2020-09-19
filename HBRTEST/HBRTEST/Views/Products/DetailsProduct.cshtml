@@ -1,0 +1,44 @@
+﻿@model HBRTEST.Entities.ProductEntity
+@{
+    ViewBag.Title = "DetailsProduct";
+    Layout = "~/Views/Shared/_SystemLayout.cshtml";
+}
+
+    <div class="container">
+        <div class="row mt-4">
+            <div class="col-md-12">
+                <div class="card">
+                    @if (!string.IsNullOrEmpty(ViewBag.Error))
+                    {
+                        <div class="alert alert-danger" role="alert">
+                            <p>@ViewBag.Error</p>
+                        </div>
+                    }
+                    <div class="card-header text-center"><h3>Detalles del producto</h3></div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-4"><b>Nombre del producto: </b>@Model.ProductName</div>
+                            <div class="col-md-4"><b>Categoría: </b>@Model.CategoryName</div>
+                            <div class="col-md-4"><b>Descripción: </b>@Model.Description</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4"><b>Existencia: </b>@Model.Existence</div>
+                            <div class="col-md-4"><b>Precio: </b>RD$@Model.Price</div>
+                            <div class="col-md-4"><b>Fecha de creación: </b>@Model.Creation_Date</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12"><b>Fecha de vencimiento: </b>@Model.Expire_Date</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4"></div>
+                            <div class="col-md-4">
+                                <a class="btn btn-danger btn-block" href="/Products/Index">Volver atrás</a>
+                            </div>
+                            <div class="col-md-4"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+

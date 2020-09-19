@@ -28,35 +28,29 @@ namespace HBRTEST.Controllers
                 return Json(personalizedException.Message);
             }
         }
-        public ActionResult CategoryHome()
+        public ActionResult Index()
         {
             CategoryModel categoryModel = new CategoryModel();
-            categoryModel.lstCategories = _categoryLogic.GetCategories();
+            categoryModel.LstCategories = _categoryLogic.GetCategories();
             return View(categoryModel);
         }
         [HttpPost]
-        public ActionResult CategoryHome(CategoryModel categoryModel)
+        public ActionResult Index(CategoryModel categoryModel)
         {
             try
             {
-                _categoryLogic.CreateCategory(categoryModel);
-                return Json("Categoría creada correctamente");
+                if(categoryModel.CategoryId > 0)
+                {
+                    _categoryLogic.UpdateCategory(categoryModel);
+                    return Json("Categoría modificada correctamente");
+                }
+                else
+                {
+                    _categoryLogic.CreateCategory(categoryModel);
+                    return Json("Categoría creada correctamente");
+                }
             }
-            catch(PersonalizedException personalizedException)
-            {
-                return Json(personalizedException.Message);
-            }
-        }
-
-        [HttpPost]
-        public ActionResult UpdateCategory(CategoryModel categoryModel)
-        {
-            try
-            {
-                _categoryLogic.UpdateCategory(categoryModel);
-                return Json("Categoría actualizada correctamente");
-            }
-            catch(PersonalizedException personalizedException)
+            catch (PersonalizedException personalizedException)
             {
                 return Json(personalizedException.Message);
             }

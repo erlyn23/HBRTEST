@@ -239,7 +239,7 @@ namespace HBRTEST.DAL
             SqlCommand command = commandInstance.GetSqlCommand();
             try
             {
-                if(CategoryID <= 1)
+                if(CategoryID <= 0)
                 {
                     throw new PersonalizedException("El id de la categoría debe ser mayor o igual a 1");
                 }

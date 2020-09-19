@@ -35,6 +35,7 @@ namespace HBRTEST.DAL
                 command.Connection = sqlConnection;
                 command.CommandText = "GetProducts";
                 command.CommandType = System.Data.CommandType.StoredProcedure;
+                command.Parameters.Clear();
                 sqlDataReader = command.ExecuteReader();
                 while (sqlDataReader.Read())
                 {
@@ -117,14 +118,14 @@ namespace HBRTEST.DAL
         public List<ProductEntity> FilterProductsByCategoryName(string CategoryName)
         {
             var lstProducts = GetProducts();
-            var filteredProducts = from products in lstProducts where products.CategoryName.ToLower().Contains(CategoryName.ToLower()) select products;
+            var filteredProducts = from products in lstProducts where products.CategoryName.ToLower().Contains(CategoryName.ToLower().Trim()) select products;
             return filteredProducts.ToList();
         }
 
         public List<ProductEntity> FilterProductByProductName(string ProductName)
         {
             var lstProducts = GetProducts();
-            var filteredProducts = from products in lstProducts where products.ProductName.ToLower().Contains(ProductName.ToLower()) select products;
+            var filteredProducts = from products in lstProducts where products.ProductName.ToLower().Contains(ProductName.ToLower().Trim()) select products;
             return filteredProducts.ToList();
         }
 

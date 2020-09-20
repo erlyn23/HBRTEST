@@ -17,39 +17,54 @@ namespace HBRTEST.Controllers
         [HttpPost]
         public ActionResult GetProductById(int ProductId)
         {
-            try
+            if (Request.IsAjaxRequest())
             {
-                ProductEntity product = _productLogic.GetProductById(ProductId);
-                return Json(product);
+                try
+                {
+                    ProductEntity product = _productLogic.GetProductById(ProductId);
+                    return Json(product);
+                }
+                catch (PersonalizedException personalizedException)
+                {
+                    return Json(personalizedException.Message);
+                }
             }
-            catch(PersonalizedException personalizedException)
+            else
             {
-                return Json(personalizedException.Message);
+                return RedirectToAction("/Users/AccessDenied");
             }
         }
 
         [HttpPost]
         public ActionResult FilterProducts(string filter, string search)
         {
-            ProductsModel productModel = new ProductsModel();
-            try
+            if (Request.IsAjaxRequest())
             {
-                if (filter.Equals("Category"))
+                ProductsModel productModel = new ProductsModel();
+                try
                 {
-                    
-                    productModel.LstProducts = _productLogic.FilterProductsByCategoryName(search);
-                    return Json(productModel.LstProducts);
+                    if (filter.Equals("Category"))
+                    {
+
+                        productModel.LstProducts = _productLogic.FilterProductsByCategoryName(search);
+                        return Json(productModel.LstProducts);
+                    }
+                    else
+                    {
+                        productModel.LstProducts = _productLogic.FilterProductsByProductName(search);
+                        return Json(productModel.LstProducts);
+                    }
+
                 }
-                else
+                catch (PersonalizedException personalizedException)
                 {
-                    productModel.LstProducts = _productLogic.FilterProductsByProductName(search);
-                    return Json(productModel.LstProducts);
+                    return Json(personalizedException.Message);
                 }
-                
             }
-            catch (PersonalizedException personalizedException)
+            else
             {
-                return Json(personalizedException.Message);
+                return RedirectToAction("/Users/AccessDenied");
+
             }
         }
 
@@ -63,22 +78,29 @@ namespace HBRTEST.Controllers
         [HttpPost]
         public ActionResult Index(ProductsModel productModel)
         {
-            try
+            if (Request.IsAjaxRequest())
             {
-                if(productModel.ProductId > 0)
+                try
                 {
-                    _productLogic.UpdateProduct(productModel);
-                    return Json("Producto modificado correctamente");
+                    if (productModel.ProductId > 0)
+                    {
+                        _productLogic.UpdateProduct(productModel);
+                        return Json("Producto modificado correctamente");
+                    }
+                    else
+                    {
+                        _productLogic.CreateProduct(productModel);
+                        return Json("Producto creado correctamente");
+                    }
                 }
-                else
+                catch (PersonalizedException personalizedException)
                 {
-                    _productLogic.CreateProduct(productModel);
-                    return Json("Producto creado correctamente");
+                    return Json(personalizedException.Message);
                 }
             }
-            catch(PersonalizedException personalizedException)
+            else
             {
-                return Json(personalizedException.Message);
+                return RedirectToAction("/Users/AccessDenied");
             }
         }
 
@@ -87,11 +109,11 @@ namespace HBRTEST.Controllers
             ProductEntity product = new ProductEntity();
             try
             {
-                
+
                 product = _productLogic.GetProductById(ProductId);
                 return View(product);
             }
-            catch(PersonalizedException personalizedException)
+            catch (PersonalizedException personalizedException)
             {
                 ViewBag.Error = personalizedException.Message;
                 return View(product);
@@ -101,14 +123,21 @@ namespace HBRTEST.Controllers
         [HttpPost]
         public ActionResult DeleteProduct(int ProductId)
         {
-            try
+            if (Request.IsAjaxRequest())
             {
-                _productLogic.DeleteProduct(ProductId);
-                return Json("Producto eliminado correctamente");
+                try
+                {
+                    _productLogic.DeleteProduct(ProductId);
+                    return Json("Producto eliminado correctamente");
+                }
+                catch (PersonalizedException personalizedException)
+                {
+                    return Json(personalizedException.Message);
+                }
             }
-            catch (PersonalizedException personalizedException)
+            else
             {
-                return Json(personalizedException.Message);
+                return RedirectToAction("/Users/AccessDenied");             
             }
         }
     }

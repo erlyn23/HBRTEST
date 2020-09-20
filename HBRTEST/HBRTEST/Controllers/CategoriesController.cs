@@ -18,14 +18,21 @@ namespace HBRTEST.Controllers
         [HttpPost]
         public ActionResult GetCategoryById(int CategoryID)
         {
-            try
+            if (Request.IsAjaxRequest())
             {
-                CategoryEntity category = _categoryLogic.GetCategoryById(CategoryID);
-                return Json(category);
+                try
+                {
+                    CategoryEntity category = _categoryLogic.GetCategoryById(CategoryID);
+                    return Json(category);
+                }
+                catch (PersonalizedException personalizedException)
+                {
+                    return Json(personalizedException.Message);
+                }
             }
-            catch(PersonalizedException personalizedException)
+            else
             {
-                return Json(personalizedException.Message);
+                return RedirectToAction("/Users/AccessDenied");
             }
         }
         public ActionResult Index()
@@ -44,36 +51,50 @@ namespace HBRTEST.Controllers
         [HttpPost]
         public ActionResult Index(CategoryModel categoryModel)
         {
-            try
+            if (Request.IsAjaxRequest())
             {
-                if(categoryModel.CategoryId > 0)
+                try
                 {
-                    _categoryLogic.UpdateCategory(categoryModel);
-                    return Json("Categoría modificada correctamente");
+                    if (categoryModel.CategoryId > 0)
+                    {
+                        _categoryLogic.UpdateCategory(categoryModel);
+                        return Json("Categoría modificada correctamente");
+                    }
+                    else
+                    {
+                        _categoryLogic.CreateCategory(categoryModel);
+                        return Json("Categoría creada correctamente");
+                    }
                 }
-                else
+                catch (PersonalizedException personalizedException)
                 {
-                    _categoryLogic.CreateCategory(categoryModel);
-                    return Json("Categoría creada correctamente");
+                    return Json(personalizedException.Message);
                 }
             }
-            catch (PersonalizedException personalizedException)
+            else
             {
-                return Json(personalizedException.Message);
+                return RedirectToAction("/Users/AccessDenied");
             }
         }
 
         [HttpPost]
         public ActionResult DeleteCategory(int CategoryID)
         {
-            try
+            if (Request.IsAjaxRequest())
             {
-                _categoryLogic.DeleteCategory(CategoryID);
-                return Json("Categoría eliminada correctamente");
+                try
+                {
+                    _categoryLogic.DeleteCategory(CategoryID);
+                    return Json("Categoría eliminada correctamente");
+                }
+                catch (PersonalizedException personalizedException)
+                {
+                    return Json(personalizedException.Message);
+                }
             }
-            catch(PersonalizedException personalizedException)
+            else
             {
-                return Json(personalizedException.Message);
+                return RedirectToAction("/Users/AccessDenied");
             }
         }
     }

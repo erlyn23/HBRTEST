@@ -24,14 +24,21 @@ namespace HBRTEST.Controllers
         {
             try
             {
-                var returnedUser = _usersLogic.SignIn(UserName, Password);
-                if (!string.IsNullOrEmpty(returnedUser.UserName) || returnedUser.UserId >= 1)
+                if (Request.IsAjaxRequest())
                 {
-                    Session["UserId"] = returnedUser.UserId;
-                    Session["UserName"] = returnedUser.UserName;
-                    return Json("/Categories/Index");
+                    var returnedUser = _usersLogic.SignIn(UserName, Password);
+                    if (!string.IsNullOrEmpty(returnedUser.UserName) || returnedUser.UserId >= 1)
+                    {
+                        Session["UserId"] = returnedUser.UserId;
+                        Session["UserName"] = returnedUser.UserName;
+                        return Json("/Categories/Index");
+                    }
+                    return Json("Usuario o contraseña incorrecta");
                 }
-                return Json("Usuario o contraseña incorrecta");
+                else
+                {
+                    return RedirectToAction("AccessDenied");
+                }
             }
             catch(PersonalizedException personalizedException)
             {
@@ -49,8 +56,15 @@ namespace HBRTEST.Controllers
         {
             try
             {
-                _usersLogic.CreateUser(user);
-                return Json("Usuario creado correctamente");
+                if (Request.IsAjaxRequest())
+                {
+                    _usersLogic.CreateUser(user);
+                    return Json("Usuario creado correctamente");
+                }
+                else
+                {
+                    return RedirectToAction("AccessDenied");
+                }
             }
             catch(Exception exception)
             {
@@ -76,8 +90,15 @@ namespace HBRTEST.Controllers
         {
             try
             {
-                _usersLogic.UpdateProfile(user);
-                return Json("Usuario modificado correctamente");
+                if (Request.IsAjaxRequest())
+                {
+                    _usersLogic.UpdateProfile(user);
+                    return Json("Usuario modificado correctamente");
+                }
+                else
+                {
+                    return RedirectToAction("AccessDenied");
+                }
             }
             catch (Exception exception)
             {
@@ -85,5 +106,9 @@ namespace HBRTEST.Controllers
             }
         }
 
+        public ActionResult AccessDenied()
+        {
+            return View();
+        }
     }
 }

@@ -23,6 +23,55 @@ namespace HBRTEST.DAL
             if (connection.State != System.Data.ConnectionState.Closed)
                 connection.Close();
         }
+
+        public UserEntity GetUserById(int UserId)
+        {
+            SqlConnection sqlConnection = dbConnection.GetDbConnection();
+            SqlCommand command = commandInstance.GetSqlCommand();
+            UserEntity user = new UserEntity();
+            try
+            {
+                if(UserId <= 0)
+                {
+                    throw new PersonalizedException("El id del usuario debe ser mayor o igual a 1");
+                }
+                else
+                {
+                    sqlConnection.Open();
+                    command.Connection = sqlConnection;
+                    command.CommandText = "GetUserById";
+                    command.CommandType = System.Data.CommandType.StoredProcedure;
+                    command.Parameters.Clear();
+                    command.Parameters.Add(new SqlParameter("@UserId", UserId));
+                    sqlDataReader = command.ExecuteReader();
+                    while (sqlDataReader.Read())
+                    {
+                        user.UserId = sqlDataReader.GetInt32(0);
+                        user.FirstName = sqlDataReader.GetString(1);
+                        user.LastName = sqlDataReader.GetString(2);
+                        user.CellPhone = sqlDataReader.GetString(3);
+                        user.Genre = sqlDataReader.GetString(4);
+                        user.Email = sqlDataReader.GetString(5);
+                        user.UserName = sqlDataReader.GetString(6);
+                        user.Password = sqlDataReader.GetString(7);
+                    }
+                    if (user == null)
+                    {
+                        throw new PersonalizedException("Usuario no encontrado");
+                        
+                    }
+                    return user;
+                }
+            }
+            catch(Exception exception)
+            {
+                throw new PersonalizedException(exception.Message);
+            }
+            finally
+            {
+                CloseConnection(sqlConnection);
+            }
+        }
         public void CreateUser(UserEntity user)
         {
             SqlConnection sqlConnection = dbConnection.GetDbConnection();
@@ -72,13 +121,25 @@ namespace HBRTEST.DAL
         }
         private bool ValidateNullOrEmptyFields(UserEntity user)
         {
-            if (string.IsNullOrEmpty(user.FirstName) || string.IsNullOrEmpty(user.LastName) || string.IsNullOrEmpty(user.CellPhone)
+            if(user.UserId > 0)
+            {
+                if (string.IsNullOrEmpty(user.FirstName) || string.IsNullOrEmpty(user.LastName) || string.IsNullOrEmpty(user.CellPhone)
+                || string.IsNullOrEmpty(user.Genre) || string.IsNullOrEmpty(user.Email) || string.IsNullOrEmpty(user.Password))
+                {
+                    return true;
+                }
+                return false;
+            }
+            else
+            {
+                if (string.IsNullOrEmpty(user.FirstName) || string.IsNullOrEmpty(user.LastName) || string.IsNullOrEmpty(user.CellPhone)
                 || string.IsNullOrEmpty(user.Genre) || string.IsNullOrEmpty(user.Email) || string.IsNullOrEmpty(user.UserName)
                 || string.IsNullOrEmpty(user.Password))
-            {
-                return true;
+                {
+                    return true;
+                }
+                return false;
             }
-            return false;
         }
         private bool ValidateIfUserNameExists(string UserName)
         {
@@ -141,19 +202,13 @@ namespace HBRTEST.DAL
                     while (sqlDataReader.Read())
                     {
                         user.UserId = sqlDataReader.GetInt32(0);
-                        user.FirstName = sqlDataReader.GetString(1);
-                        user.LastName = sqlDataReader.GetString(2);
-                        user.CellPhone = sqlDataReader.GetString(3);
-                        user.Genre = sqlDataReader.GetString(4);
-                        user.Email = sqlDataReader.GetString(5);
                         user.UserName = sqlDataReader.GetString(6);
-                        user.Password = sqlDataReader.GetString(7);
                     }
                     sqlDataReader.Close();
                     CloseConnection(sqlConnection);
                     if(user == null)
                     {
-                        throw new PersonalizedException("El nombre de usuario o contraseña incorrecta");
+                        throw new PersonalizedException("Nombre de usuario o contraseña incorrecta");
                     }
                     return user;
                 }

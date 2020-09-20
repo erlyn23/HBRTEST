@@ -29,6 +29,22 @@ AddEventClickCreateUpdateProduct = function () {
     });
 }
 
+ValidateEmptyOrNullFields = function (categoryId, productName, existence, description) {
+    if (categoryId <= 0 || productName.length <= 0 || existence <= 0 || description.length <= 0) {
+        return true;
+    }
+    return false;
+}
+
+OnSuccessCreateUpdateProduct = function (data) {
+    alert(data);
+    window.location = "/Products/Index";
+}
+
+OnErrorCreateUpdateProduct = function (XMLHttpRquest, textStatus, errorMessage) {
+    alert("Error: " + textStatus + ". " + errorMessage);
+}
+
 AddEventClickCancelCreateProduct = function () {
     $("#CancelCreateUpdateProduct").on("click", function () {
         var json = {
@@ -53,7 +69,6 @@ AddEventClickCancelCreateProduct = function () {
         }
     });
 }
-
 
 AddEventClickSearchProduct = function () {
     $("#Search").on("keyup", function () {
@@ -85,23 +100,6 @@ OnSuccessSearchProduct = function (data) {
 OnErrorSearchProduct = function (XMLHttpRequest, textStatus, errorMessage) {
     alert("Error: " + textStatus + ". " + errorMessage);
 }
-
-ValidateEmptyOrNullFields = function (categoryId, productName, existence, description) {
-    if (categoryId <= 0 || productName.length <= 0 || existence <= 0 || description.length <= 0) {
-        return true;
-    }
-    return false;
-}
-
-OnSuccessCreateUpdateProduct = function (data) {
-    alert(data);
-    window.location = "/Products/Index";
-}
-
-OnErrorCreateUpdateProduct = function (XMLHttpRquest, textStatus, errorMessage) {
-    alert("Error: " + textStatus + ". " + errorMessage);
-}
-
 
 GetProduct = function (ProductId) {
     var json = { ProductId: ProductId }

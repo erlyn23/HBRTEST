@@ -275,6 +275,10 @@
         }
       },
       "HBRTEST.Utilities/1.0.0": {
+        "dependencies": {
+          "HBRTEST.Entities": "1.0.0",
+          "HBRTEST.ErrorHandling": "1.0.0"
+        },
         "runtime": {
           "HBRTEST.Utilities.dll": {}
         }

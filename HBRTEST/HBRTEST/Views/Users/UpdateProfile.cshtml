@@ -1,0 +1,79 @@
+﻿@model HBRTEST.Entities.UserEntity
+@{
+    ViewBag.Title = "Editar perfil";
+    Layout = "~/Views/Shared/_SystemLayout.cshtml";
+}
+
+<script src="~/Scripts/Views/request.js"></script>
+<script src="~/Scripts/Views/Users/UpdateUser.js"></script>
+
+
+<style type="text/css">
+
+    input::-webkit-outer-spin-button,
+    input::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+
+    input[type=number] {
+        -moz-appearance: textfield;
+    }
+</style>
+
+<div class="container">
+    <div class="row mt-3">
+        <div class="col-md-4"></div>
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-header text-center"><h3>Editar perfil</h3></div>
+                <div class="card-body">
+                    <div class="form-group">
+                        @Html.HiddenFor(user => user.UserId, new { value = Model.UserId })
+                    </div>
+                    <div class="form-group">
+                        <label for="FirstName">Nombre:</label>
+                        @Html.TextBoxFor(user => user.FirstName, new { value = Model.FirstName, @class = "form-control", placeholder = "Escribe tu nombre" })
+                    </div>
+                    <div class="form-group">
+                        <label for="LastName">Apellido:</label>
+                        @Html.TextBoxFor(user => user.LastName, new { value = Model.LastName, @class = "form-control", placeholder = "Escribe tu apellido" })
+                    </div>
+                    <div class="form-group">
+                        <label for="CellPhone">Teléfono:</label>
+                        @Html.TextBoxFor(user => user.CellPhone, new { value = Model.CellPhone, @class = "form-control", placeholder = "Escribe tu teléfono", @type = "number" })
+                    </div>
+                    <div class="form-group">
+                        <label for="Genre">Género:</label>
+                        <select class="form-control" id="Genre" name="Genre">
+                            <option disabled value="">Selecciona tu género</option>
+                            @if(Model.Genre.Equals("F")){
+                                <option value="F" selected>F</option>
+                            }
+                            else
+                            {
+                                <option value="M" selected>M</option>
+                            }
+                            
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="Email">Correo electrónico:</label>
+                        @Html.TextBoxFor(user => user.Email, new { value = Model.Email, @class = "form-control", placeholder = "Escribe tu correo electrónico", @type = "email" })
+                    </div>
+                    <div class="form-group">
+                        <p>Nombre de usuario: <b>@Model.UserName</b></p>
+                    </div>
+                    <div class="form-group">
+                        <label for="Password">Contraseña:</label>
+                        @Html.PasswordFor(user => user.Password, new { value = Model.Password, @class = "form-control", placeholder = "Escribe tu contraseña" })
+                    </div>
+                    <div class="text-center">
+                        <button type="button" class="btn btn-success btn-block" id="UpdateUser">Guardar cambios</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4"></div>
+    </div>
+</div>

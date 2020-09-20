@@ -12,14 +12,31 @@ namespace HBRTEST.Controllers
     public class UsersController : Controller
     {
         private UsersBLL _usersLogic = new UsersBLL();
-        public ActionResult SignIn()
+        public ActionResult Index()
         {
+            Session["UserId"] = null;
+            Session["UserName"] = null;
             return View();
         }
+
         [HttpPost]
-        public ActionResult SignIn(string UserName, string Password)
+        public ActionResult Index(string UserName, string Password)
         {
-            return View();
+            try
+            {
+                var returnedUser = _usersLogic.SignIn(UserName, Password);
+                if (!string.IsNullOrEmpty(returnedUser.UserName) || returnedUser.UserId >= 1)
+                {
+                    Session["UserId"] = returnedUser.UserId;
+                    Session["UserName"] = returnedUser.UserName;
+                    return Json("/Categories/Index");
+                }
+                return Json("Usuario o contraseña incorrecta");
+            }
+            catch(PersonalizedException personalizedException)
+            {
+                return Json(personalizedException.Message);
+            }
         }
 
         public ActionResult CreateUser()
@@ -43,7 +60,15 @@ namespace HBRTEST.Controllers
 
         public ActionResult UpdateProfile()
         {
-            return View();
+            if(Session["UserId"] != null)
+            {
+                UserEntity currentUser = _usersLogic.GetUserById(int.Parse(Session["UserId"].ToString()));
+                return View(currentUser);
+            }
+            else
+            {
+                return RedirectToAction("Index");
+            }
         }
 
         [HttpPost]

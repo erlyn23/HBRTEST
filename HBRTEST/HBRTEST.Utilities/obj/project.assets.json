@@ -25,6 +25,26 @@
         "build": {
           "build/netstandard2.0/NETStandard.Library.targets": {}
         }
+      },
+      "HBRTEST.Entities/1.0.0": {
+        "type": "project",
+        "framework": ".NETStandard,Version=v2.0",
+        "compile": {
+          "bin/placeholder/HBRTEST.Entities.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/HBRTEST.Entities.dll": {}
+        }
+      },
+      "HBRTEST.ErrorHandling/1.0.0": {
+        "type": "project",
+        "framework": ".NETStandard,Version=v2.0",
+        "compile": {
+          "bin/placeholder/HBRTEST.ErrorHandling.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/HBRTEST.ErrorHandling.dll": {}
+        }
       }
     }
   },
@@ -172,10 +192,22 @@
         "netstandard.library.2.0.3.nupkg.sha512",
         "netstandard.library.nuspec"
       ]
+    },
+    "HBRTEST.Entities/1.0.0": {
+      "type": "project",
+      "path": "../HBRTEST.Entities/HBRTEST.Entities.csproj",
+      "msbuildProject": "../HBRTEST.Entities/HBRTEST.Entities.csproj"
+    },
+    "HBRTEST.ErrorHandling/1.0.0": {
+      "type": "project",
+      "path": "../HBRTEST.ErrorHandling/HBRTEST.ErrorHandling.csproj",
+      "msbuildProject": "../HBRTEST.ErrorHandling/HBRTEST.ErrorHandling.csproj"
     }
   },
   "projectFileDependencyGroups": {
     ".NETStandard,Version=v2.0": [
+      "HBRTEST.Entities >= 1.0.0",
+      "HBRTEST.ErrorHandling >= 1.0.0",
       "NETStandard.Library >= 2.0.3"
     ]
   },
@@ -204,7 +236,14 @@
       },
       "frameworks": {
         "netstandard2.0": {
-          "projectReferences": {}
+          "projectReferences": {
+            "C:\\Users\\Lenovo\\Documents\\Visual Studio 2019\\Projects\\HBRTEST\\HBRTEST\\HBRTEST.Entities\\HBRTEST.Entities.csproj": {
+              "projectPath": "C:\\Users\\Lenovo\\Documents\\Visual Studio 2019\\Projects\\HBRTEST\\HBRTEST\\HBRTEST.Entities\\HBRTEST.Entities.csproj"
+            },
+            "C:\\Users\\Lenovo\\Documents\\Visual Studio 2019\\Projects\\HBRTEST\\HBRTEST\\HBRTEST.ErrorHandling\\HBRTEST.ErrorHandling.csproj": {
+              "projectPath": "C:\\Users\\Lenovo\\Documents\\Visual Studio 2019\\Projects\\HBRTEST\\HBRTEST\\HBRTEST.ErrorHandling\\HBRTEST.ErrorHandling.csproj"
+            }
+          }
         }
       },
       "warningProperties": {

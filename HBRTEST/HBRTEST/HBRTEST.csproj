@@ -122,6 +122,9 @@
     <Content Include="Scripts\Views\Categories\Script.js" />
     <Content Include="Scripts\Views\Products\Script.js" />
     <Content Include="Scripts\Views\request.js" />
+    <Content Include="Scripts\Views\Users\CreateUser.js" />
+    <Content Include="Scripts\Views\Users\SignIn.js" />
+    <Content Include="Scripts\Views\Users\UpdateUser.js" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
@@ -155,6 +158,10 @@
     <Content Include="Scripts\Jquery\jquery-3.5.1.slim.min.map" />
     <Content Include="Scripts\Jquery\jquery-3.5.1.min.map" />
     <Content Include="Views\Products\DetailsProduct.cshtml" />
+    <Content Include="Views\Shared\_AccountLayout.cshtml" />
+    <Content Include="Views\Users\Index.cshtml" />
+    <Content Include="Views\Users\CreateUser.cshtml" />
+    <Content Include="Views\Users\UpdateProfile.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -164,7 +171,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Views\Users\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\HBRTEST.BLL\HBRTEST.BLL.csproj">

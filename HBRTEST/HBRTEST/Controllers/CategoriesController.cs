@@ -30,9 +30,16 @@ namespace HBRTEST.Controllers
         }
         public ActionResult Index()
         {
-            CategoryModel categoryModel = new CategoryModel();
-            categoryModel.LstCategories = _categoryLogic.GetCategories();
-            return View(categoryModel);
+            if(Session["UserId"] != null)
+            {
+                CategoryModel categoryModel = new CategoryModel();
+                categoryModel.LstCategories = _categoryLogic.GetCategories();
+                return View(categoryModel);
+            }
+            else
+            {
+                return RedirectToAction("/Users/Index");
+            }
         }
         [HttpPost]
         public ActionResult Index(CategoryModel categoryModel)

@@ -209,7 +209,14 @@
         },
         "frameworks": {
           "netstandard2.0": {
-            "projectReferences": {}
+            "projectReferences": {
+              "C:\\Users\\Lenovo\\Documents\\Visual Studio 2019\\Projects\\HBRTEST\\HBRTEST\\HBRTEST.Entities\\HBRTEST.Entities.csproj": {
+                "projectPath": "C:\\Users\\Lenovo\\Documents\\Visual Studio 2019\\Projects\\HBRTEST\\HBRTEST\\HBRTEST.Entities\\HBRTEST.Entities.csproj"
+              },
+              "C:\\Users\\Lenovo\\Documents\\Visual Studio 2019\\Projects\\HBRTEST\\HBRTEST\\HBRTEST.ErrorHandling\\HBRTEST.ErrorHandling.csproj": {
+                "projectPath": "C:\\Users\\Lenovo\\Documents\\Visual Studio 2019\\Projects\\HBRTEST\\HBRTEST\\HBRTEST.ErrorHandling\\HBRTEST.ErrorHandling.csproj"
+              }
+            }
           }
         },
         "warningProperties": {

@@ -1,0 +1,72 @@
+﻿@model HBRTEST.Entities.UserEntity
+@{
+    ViewBag.Title = "Registrarme";
+    Layout = "~/Views/Shared/_AccountLayout.cshtml";
+}
+
+<script src="~/Scripts/Views/request.js"></script>
+<script src="~/Scripts/Views/Users/CreateUser.js"></script>
+
+
+<style type="text/css">
+
+    input::-webkit-outer-spin-button,
+    input::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+
+    input[type=number] {
+        -moz-appearance: textfield;
+    }
+</style>
+
+<div class="container">
+    <div class="row mt-3">
+        <div class="col-md-4"></div>
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-header text-center"><h3>Formulario de registro</h3></div>
+                <div class="card-body">
+                    <div class="form-group">
+                        <label for="FirstName">Nombre:</label>
+                        @Html.TextBoxFor(user => user.FirstName, new { @class = "form-control", placeholder = "Escribe tu nombre" })
+                    </div>
+                    <div class="form-group">
+                        <label for="LastName">Apellido:</label>
+                        @Html.TextBoxFor(user => user.LastName, new { @class = "form-control", placeholder = "Escribe tu apellido" })
+                    </div>
+                    <div class="form-group">
+                        <label for="CellPhone">Teléfono:</label>
+                        @Html.TextBoxFor(user => user.CellPhone, new { @class = "form-control", placeholder = "Escribe tu teléfono" })
+                    </div>
+                    <div class="form-group">
+                        <label for="Genre">Género:</label>
+                        <select class="form-control" id="Genre" name="Genre">
+                            <option disabled value="">Selecciona tu género</option>
+                            <option value="F">F</option>
+                            <option value="M">M</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="Email">Correo electrónico:</label>
+                        @Html.TextBoxFor(user => user.Email, new { @class = "form-control", placeholder = "Escribe tu correo electrónico", @type = "email" })
+                    </div>
+                    <div class="form-group">
+                        <label for="UserName">Nombre de usuario:</label>
+                        @Html.TextBoxFor(user => user.UserName, new { @class = "form-control", placeholder = "Escribe tu nombre de usuario" })
+                    </div>
+                    <div class="form-group">
+                        <label for="Password">Contraseña:</label>
+                        @Html.PasswordFor(user => user.Password, new { @class = "form-control", placeholder = "Escribe tu contraseña" })
+                    </div>
+                    <div class="text-center">
+                        <button type="button" class="btn btn-success btn-block" id="CreateUser">Registrarme</button>
+                    </div>
+                    <p>¿Ya posees una cuenta? @Html.ActionLink("Inicia sesión aquí", "Index", "Users")</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4"></div>
+    </div>
+</div>

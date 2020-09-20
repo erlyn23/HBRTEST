@@ -1,4 +1,5 @@
 ﻿using System;
+using HBRTEST.ErrorHandling;
 
 namespace HBRTEST.Utilities
 {
@@ -10,19 +11,19 @@ namespace HBRTEST.Utilities
             {
                 if (!string.IsNullOrEmpty(Password))
                 {
-                    byte[] data = System.Text.Encoding.ASCII.GetBytes(Password);
-                    data = new System.Security.Cryptography.SHA256Managed().ComputeHash(data);
-                    string hash = System.Text.Encoding.ASCII.GetString(data);
-                    return hash;
+                    byte[] passwordBytes = System.Text.Encoding.ASCII.GetBytes(Password);
+                    passwordBytes = new System.Security.Cryptography.SHA256Managed().ComputeHash(passwordBytes);
+                    string passwordBytesEncryptedString = System.Text.Encoding.ASCII.GetString(passwordBytes);
+                    return passwordBytesEncryptedString;
                 }
                 else
                 {
-                    return null;
+                    throw new PersonalizedException("La constraseña no debe estar vacía");
                 }
             }
-            catch
+            catch(Exception exception)
             {
-                throw new ArgumentNullException();
+                throw new PersonalizedException(exception.Message);
             }
         }
     }

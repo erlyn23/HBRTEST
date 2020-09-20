@@ -13,7 +13,11 @@ namespace HBRTEST.BLL
         {
 
         }
-
+        public UserEntity GetUserById(int UserId)
+        {
+            UserEntity user = _usersRepository.GetUserById(UserId);
+            return user;
+        }
         public UserEntity SignIn(string UserName, string Password)
         {
             UserEntity user = _usersRepository.SignIn(UserName, Password);

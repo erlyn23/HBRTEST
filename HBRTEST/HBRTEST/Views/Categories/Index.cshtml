@@ -3,8 +3,9 @@
     ViewBag.Title = "Administrar categorías";
     Layout = "~/Views/Shared/_SystemLayout.cshtml";
 }
+<script src="~/Scripts/Views/Categories/CategoriesActions.js"></script>
+<script src="~/Scripts/Views/Categories/CategoriesFormValidations.js"></script>
 <script src="~/Scripts/Views/Categories/Script.js"></script>
-<script src="~/Scripts/Views/request.js"></script>
 
 <div class="container">
     <div class="row mt-4">
@@ -12,24 +13,25 @@
             <div class="card">
                 <div class="card-header text-center"><h3 id="titleText">Crear categoría</h3></div>
                 <div class="card-body">
-                    <form>
+                    <form id="CategoryForm">
                         <div class="form-group d-none">
                             @Html.HiddenFor(category=>category.CategoryId)
                         </div>
                         <div class="form-group">
                             <label for="CategoryName">Categoría:</label>
                             @Html.TextBoxFor(category => category.CategoryName, new { placeholder = "Escribe el nombre de la categoría", @class = "form-control" })
-                            <div class="alert alert-danger d-none" id="validationMessageCategoryName" role="alert">
+                            <div class="text-danger d-none" id="CategoryNameError">
                             </div>
                         </div>
                         <div class="form-group">
                             <label for="Description">Descripción:</label>
                             @Html.TextAreaFor(category => category.Description, new { placeholder = "Escribe la descripción de la categoría", style = "resize: none;", @class = "form-control" })
-
+                            <div class="text-danger d-none"  id="DescriptionError">
+                            </div>
                         </div>
                         <div class="form-group text-center">
-                            <button type="button" class="btn btn-block btn-success" id="CreateCategory">Enviar</button>
-                            <button type="button" class="btn btn-block btn-danger" id="CancelCreateUpdate">Cancelar</button>
+                            <button type="button" class="btn btn-block btn-success" id="SendCategory">Enviar</button>
+                            <button type="button" class="btn btn-block btn-danger" id="CancelSendCategory">Cancelar</button>
                         </div>
                     </form>
                 </div>

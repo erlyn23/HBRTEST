@@ -3,9 +3,10 @@ using System.Collections.Generic;
 using System.Text;
 using System.Data.SqlClient;
 using System.Configuration;
-using HBRTEST.Entities;
-using HBRTEST.Utilities;
+using HBRTEST.Domain;
+using HBRTEST.Core.Utilities;
 using HBRTEST.ErrorHandling;
+using HBRTEST.Core.DBUtilities;
 
 namespace HBRTEST.DAL
 {
@@ -13,22 +14,17 @@ namespace HBRTEST.DAL
     {
         SqlDataReader sqlDataReader;
         DBConnection dbConnection = DBConnection.DbConnectionInstance();
-        sqlCommand commandInstance = sqlCommand.InstanceCommand();
+        Command commandInstance = Command.InstanceCommand();
         public UsersDAL()
         {
 
-        }
-        private void CloseConnection(SqlConnection connection)
-        {
-            if (connection.State != System.Data.ConnectionState.Closed)
-                connection.Close();
         }
 
         public UserEntity GetUserById(int UserId)
         {
             SqlConnection sqlConnection = dbConnection.GetDbConnection();
             SqlCommand command = commandInstance.GetSqlCommand();
-            UserEntity user = new UserEntity();
+            UserEntity user = null;
             try
             {
                 if(UserId <= 0)
@@ -46,15 +42,22 @@ namespace HBRTEST.DAL
                     sqlDataReader = command.ExecuteReader();
                     while (sqlDataReader.Read())
                     {
-                        user.UserId = sqlDataReader.GetInt32(0);
-                        user.FirstName = sqlDataReader.GetString(1);
-                        user.LastName = sqlDataReader.GetString(2);
-                        user.CellPhone = sqlDataReader.GetString(3);
-                        user.Genre = sqlDataReader.GetString(4);
-                        user.Email = sqlDataReader.GetString(5);
-                        user.UserName = sqlDataReader.GetString(6);
-                        user.Password = sqlDataReader.GetString(7);
+                        user = new UserEntity {
+                            UserId = sqlDataReader.GetInt32(0),
+                            FirstName = sqlDataReader.GetString(1),
+                            LastName = sqlDataReader.GetString(2),
+                            CellPhone = sqlDataReader.GetString(3),
+                            Genre = sqlDataReader.GetString(4),
+                            Email = sqlDataReader.GetString(5),
+                            UserName = sqlDataReader.GetString(6),
+                            Password = sqlDataReader.GetString(7),
+                            CreationDate = DateTime.Parse(sqlDataReader.GetString(8)),
+                            LastModificationDate = DateTime.Parse(sqlDataReader.GetString(9)),
+                            Status = sqlDataReader.GetString(10)
+                       };
                     }
+                    sqlDataReader.Close();
+                    DBConnection.CloseConnection(sqlConnection);
                     if (user == null)
                     {
                         throw new PersonalizedException("Usuario no encontrado");
@@ -69,7 +72,7 @@ namespace HBRTEST.DAL
             }
             finally
             {
-                CloseConnection(sqlConnection);
+                DBConnection.CloseConnection(sqlConnection);
             }
         }
         public void CreateUser(UserEntity user)
@@ -106,8 +109,11 @@ namespace HBRTEST.DAL
                     command.Parameters.Add(new SqlParameter("@Email", user.Email));
                     command.Parameters.Add(new SqlParameter("@UserName", user.UserName));
                     command.Parameters.Add(new SqlParameter("@Password", PasswordEncrypt.Encrypt(user.Password)));
+                    command.Parameters.Add(new SqlParameter("@CreationDate", DateTime.Today.ToString()));
+                    command.Parameters.Add(new SqlParameter("@LastModificationDate", DateTime.Today.ToString()));
+                    command.Parameters.Add(new SqlParameter("@Status", "Activo"));
                     command.ExecuteNonQuery();
-                    CloseConnection(sqlConnection);
+                    DBConnection.CloseConnection(sqlConnection);
                 }
             }
             catch(Exception exception)
@@ -116,7 +122,7 @@ namespace HBRTEST.DAL
             }
             finally
             {
-                CloseConnection(sqlConnection);
+                DBConnection.CloseConnection(sqlConnection);
             }
         }
         private bool ValidateNullOrEmptyFields(UserEntity user)
@@ -124,7 +130,7 @@ namespace HBRTEST.DAL
             if(user.UserId > 0)
             {
                 if (string.IsNullOrEmpty(user.FirstName) || string.IsNullOrEmpty(user.LastName) || string.IsNullOrEmpty(user.CellPhone)
-                || string.IsNullOrEmpty(user.Genre) || string.IsNullOrEmpty(user.Email) || string.IsNullOrEmpty(user.Password))
+                || string.IsNullOrEmpty(user.Genre) || string.IsNullOrEmpty(user.Email))
                 {
                     return true;
                 }
@@ -148,6 +154,9 @@ namespace HBRTEST.DAL
             SqlCommand command = commandInstance.GetSqlCommand();
             try
             {
+                if (string.IsNullOrEmpty(UserName))
+                    throw new PersonalizedException("El campo nombre de usuario no puede estar vacío");
+                
                 sqlConnection.Open();
                 command.Connection = sqlConnection;
                 command.CommandText = "ValidateIfUserExists";
@@ -160,12 +169,12 @@ namespace HBRTEST.DAL
                     if (!string.IsNullOrEmpty(sqlDataReader.GetString(0)))
                     {
                         sqlDataReader.Close();
-                        CloseConnection(sqlConnection);
+                        DBConnection.CloseConnection(sqlConnection);
                         return true;
                     }
                 }
                 sqlDataReader.Close();
-                CloseConnection(sqlConnection);
+                DBConnection.CloseConnection(sqlConnection);
                 return false;
             }
             catch(Exception exception)
@@ -174,7 +183,7 @@ namespace HBRTEST.DAL
             }
             finally
             {
-                CloseConnection(sqlConnection);
+               DBConnection.CloseConnection(sqlConnection);
             }
         }
         public UserEntity SignIn(string UserName, string Password)
@@ -201,11 +210,15 @@ namespace HBRTEST.DAL
                     sqlDataReader = command.ExecuteReader();
                     while (sqlDataReader.Read())
                     {
-                        user.UserId = sqlDataReader.GetInt32(0);
-                        user.UserName = sqlDataReader.GetString(6);
+                        user = new UserEntity
+                        {
+                            UserId = sqlDataReader.GetInt32(0),
+                            UserName = sqlDataReader.GetString(6),
+                            Status = sqlDataReader.GetString(10)
+                        };
                     }
                     sqlDataReader.Close();
-                    CloseConnection(sqlConnection);
+                    DBConnection.CloseConnection(sqlConnection);
                     if(user == null)
                     {
                         throw new PersonalizedException("Nombre de usuario o contraseña incorrecta");
@@ -219,14 +232,15 @@ namespace HBRTEST.DAL
             }
             finally
             {
-                CloseConnection(sqlConnection);
+                DBConnection.CloseConnection(sqlConnection);
             }
         }
         public void UpdateProfile(UserEntity user)
         {
             SqlConnection sqlConnection = dbConnection.GetDbConnection();
             SqlCommand command = commandInstance.GetSqlCommand();
-
+            bool newPassword = false;
+            UserEntity oldUser = null;
             try
             {
                 bool hasUserEmptyFields = ValidateNullOrEmptyFields(user);
@@ -238,23 +252,35 @@ namespace HBRTEST.DAL
                 {
                     throw new PersonalizedException("No puedes dejar campos vacíos");
                 }
+                else if (string.IsNullOrEmpty(user.Password))
+                {
+                    oldUser = GetUserById(user.UserId);
+                    newPassword = false;
+                }
+               
+                sqlConnection.Open();
+                command.Connection = sqlConnection;
+                command.CommandText = "UpdateUser";
+                command.CommandType = System.Data.CommandType.StoredProcedure;
+                command.Parameters.Clear();
+                command.Parameters.Add(new SqlParameter("@UserId", user.UserId));
+                command.Parameters.Add(new SqlParameter("@FirstName", user.FirstName));
+                command.Parameters.Add(new SqlParameter("@LastName", user.LastName));
+                command.Parameters.Add(new SqlParameter("@CellPhone", user.CellPhone));
+                command.Parameters.Add(new SqlParameter("@Genre", user.Genre));
+                command.Parameters.Add(new SqlParameter("@Email", user.Email));
+                if (newPassword)
+                {
+                    command.Parameters.Add(new SqlParameter("@Password", PasswordEncrypt.Encrypt(user.Password)));
+                }
                 else
                 {
-                    sqlConnection.Open();
-                    command.Connection = sqlConnection;
-                    command.CommandText = "UpdateUser";
-                    command.CommandType = System.Data.CommandType.StoredProcedure;
-                    command.Parameters.Clear();
-                    command.Parameters.Add(new SqlParameter("@UserId", user.UserId));
-                    command.Parameters.Add(new SqlParameter("@FirstName", user.FirstName));
-                    command.Parameters.Add(new SqlParameter("@LastName", user.LastName));
-                    command.Parameters.Add(new SqlParameter("@CellPhone", user.CellPhone));
-                    command.Parameters.Add(new SqlParameter("@Genre", user.Genre));
-                    command.Parameters.Add(new SqlParameter("@Email", user.Email));
-                    command.Parameters.Add(new SqlParameter("@Password", PasswordEncrypt.Encrypt(user.Password)));
-                    command.ExecuteNonQuery();
-                    CloseConnection(sqlConnection);
+                    command.Parameters.Add(new SqlParameter("@Password", oldUser.Password));
                 }
+                command.Parameters.Add(new SqlParameter("@LastModificationDate", DateTime.Today.ToString()));
+                command.Parameters.Add(new SqlParameter("@Status", user.Status));
+                command.ExecuteNonQuery();
+                DBConnection.CloseConnection(sqlConnection);
             }
             catch(Exception exception)
             {
@@ -262,7 +288,7 @@ namespace HBRTEST.DAL
             }
             finally
             {
-                CloseConnection(sqlConnection);
+                DBConnection.CloseConnection(sqlConnection);
             }
         }
     }

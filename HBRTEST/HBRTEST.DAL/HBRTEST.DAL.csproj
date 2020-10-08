@@ -10,9 +10,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\HBRTEST.Entities\HBRTEST.Entities.csproj" />
+    <ProjectReference Include="..\HBRTEST.Entities\HBRTEST.Domain.csproj" />
     <ProjectReference Include="..\HBRTEST.ErrorHandling\HBRTEST.ErrorHandling.csproj" />
-    <ProjectReference Include="..\HBRTEST.Utilities\HBRTEST.Utilities.csproj" />
+    <ProjectReference Include="..\HBRTEST.Utilities\HBRTEST.Core.csproj" />
   </ItemGroup>
 
 </Project>

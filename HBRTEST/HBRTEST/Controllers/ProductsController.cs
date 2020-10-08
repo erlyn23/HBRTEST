@@ -6,7 +6,7 @@ using System.Web.Mvc;
 using HBRTEST.Models;
 using HBRTEST.BLL;
 using HBRTEST.ErrorHandling;
-using HBRTEST.Entities;
+using HBRTEST.Domain;
 
 namespace HBRTEST.Controllers
 {
@@ -21,7 +21,7 @@ namespace HBRTEST.Controllers
             {
                 try
                 {
-                    ProductEntity product = _productLogic.GetProductById(ProductId);
+                    ProductEntity product = _productLogic.GetEntityById(ProductId);
                     return Json(product);
                 }
                 catch (PersonalizedException personalizedException)
@@ -71,7 +71,7 @@ namespace HBRTEST.Controllers
         public ActionResult Index()
         {
             ProductsModel productModel = new ProductsModel();
-            productModel.LstProducts = _productLogic.GetProducts();
+            productModel.LstProducts = _productLogic.GetAll();
             return View(productModel);
         }
 
@@ -84,12 +84,12 @@ namespace HBRTEST.Controllers
                 {
                     if (productModel.ProductId > 0)
                     {
-                        _productLogic.UpdateProduct(productModel);
+                        _productLogic.Update(productModel);
                         return Json("Producto modificado correctamente");
                     }
                     else
                     {
-                        _productLogic.CreateProduct(productModel);
+                        _productLogic.Add(productModel);
                         return Json("Producto creado correctamente");
                     }
                 }
@@ -110,7 +110,7 @@ namespace HBRTEST.Controllers
             try
             {
 
-                product = _productLogic.GetProductById(ProductId);
+                product = _productLogic.GetEntityById(ProductId);
                 return View(product);
             }
             catch (PersonalizedException personalizedException)
@@ -127,7 +127,7 @@ namespace HBRTEST.Controllers
             {
                 try
                 {
-                    _productLogic.DeleteProduct(ProductId);
+                    _productLogic.Delete(ProductId);
                     return Json("Producto eliminado correctamente");
                 }
                 catch (PersonalizedException personalizedException)

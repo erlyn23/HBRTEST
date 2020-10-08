@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
-using HBRTEST.Entities;
+using HBRTEST.Domain;
 
 namespace HBRTEST.Models
 {

@@ -3,9 +3,10 @@ using System.Collections.Generic;
 using System.Text;
 using System.Data.SqlClient;
 using System.Linq;
-using HBRTEST.Entities;
+using HBRTEST.Domain;
 using System.ComponentModel;
 using HBRTEST.ErrorHandling;
+using HBRTEST.Core.DBUtilities;
 
 namespace HBRTEST.DAL
 {
@@ -13,17 +14,12 @@ namespace HBRTEST.DAL
     {
         SqlDataReader sqlDataReader;
         DBConnection dbConnection = DBConnection.DbConnectionInstance();
-        sqlCommand commandInstance = sqlCommand.InstanceCommand();
+        Command commandInstance = Command.InstanceCommand();
         public ProductsDAL()
         {
 
         }
 
-        private void CloseConnection(SqlConnection connection)
-        {
-            if (connection.State != System.Data.ConnectionState.Closed)
-                connection.Close();
-        }
         public List<ProductEntity> GetProducts()
         {
             SqlConnection sqlConnection = dbConnection.GetDbConnection();
@@ -39,20 +35,23 @@ namespace HBRTEST.DAL
                 sqlDataReader = command.ExecuteReader();
                 while (sqlDataReader.Read())
                 {
-                    ProductEntity product = new ProductEntity();
-                    product.ProductId = sqlDataReader.GetInt32(0);
-                    product.CategoryId = sqlDataReader.GetInt32(1);
-                    product.ProductName = sqlDataReader.GetString(2);
-                    product.CategoryName = sqlDataReader.GetString(3);
-                    product.Description = sqlDataReader.GetString(4);
-                    product.Existence = sqlDataReader.GetInt32(5);
-                    product.Price = float.Parse(sqlDataReader.GetDecimal(6).ToString());
-                    product.Creation_Date = sqlDataReader.GetDateTime(7);
-                    product.Expire_Date = sqlDataReader.GetDateTime(8);
+                    ProductEntity product = new ProductEntity 
+                    { 
+                        ProductId = sqlDataReader.GetInt32(0),
+                        CategoryId = sqlDataReader.GetInt32(1),
+                        ProductName = sqlDataReader.GetString(2),
+                        CategoryName = sqlDataReader.GetString(3),
+                        Description = sqlDataReader.GetString(4),
+                        Existence = sqlDataReader.GetInt32(5),
+                        Price = sqlDataReader.GetFloat(6),
+                        CreationDate = DateTime.Parse(sqlDataReader.GetString(7)),
+                        LastModificationDate = DateTime.Parse(sqlDataReader.GetString(8)),
+                        Status = sqlDataReader.GetString(9)
+                    };
                     lstProducts.Add(product);
                 }
                 sqlDataReader.Close();
-                CloseConnection(sqlConnection);
+                DBConnection.CloseConnection(sqlConnection);
                 return lstProducts;
             }
             catch(Exception exception)
@@ -61,14 +60,14 @@ namespace HBRTEST.DAL
             }
             finally
             {
-                CloseConnection(sqlConnection);
+                DBConnection.CloseConnection(sqlConnection);
             }
         }
         public ProductEntity GetProductById(int ProductID)
         {
             SqlConnection sqlConnection = dbConnection.GetDbConnection();
             SqlCommand command = commandInstance.GetSqlCommand();
-            ProductEntity product = new ProductEntity();
+            ProductEntity product = null;
             try
             {
                 if(ProductID <= 0)
@@ -86,19 +85,23 @@ namespace HBRTEST.DAL
                     sqlDataReader = command.ExecuteReader();
                     while (sqlDataReader.Read())
                     {
-                        product.ProductId = sqlDataReader.GetInt32(0);
-                        product.CategoryId = sqlDataReader.GetInt32(1);
-                        product.ProductName = sqlDataReader.GetString(2);
-                        product.CategoryName = sqlDataReader.GetString(3);
-                        product.Description = sqlDataReader.GetString(4);
-                        product.Existence = sqlDataReader.GetInt32(5);
-                        product.Price = float.Parse(sqlDataReader.GetDecimal(6).ToString());
-                        product.Creation_Date = sqlDataReader.GetDateTime(7);
-                        product.Expire_Date = sqlDataReader.GetDateTime(8);
+                        product = new ProductEntity
+                        {
+                            ProductId = sqlDataReader.GetInt32(0),
+                            CategoryId = sqlDataReader.GetInt32(1),
+                            ProductName = sqlDataReader.GetString(2),
+                            CategoryName = sqlDataReader.GetString(3),
+                            Description = sqlDataReader.GetString(4),
+                            Existence = sqlDataReader.GetInt32(5),
+                            Price = sqlDataReader.GetFloat(6),
+                            CreationDate = DateTime.Parse(sqlDataReader.GetString(7)),
+                            LastModificationDate = DateTime.Parse(sqlDataReader.GetString(8)),
+                            Status = sqlDataReader.GetString(9)
+                        };
                     }
                     sqlDataReader.Close();
-                    CloseConnection(sqlConnection);
-                    if(product == null)
+                    DBConnection.CloseConnection(sqlConnection);
+                    if (product == null)
                     {
                         throw new PersonalizedException("No se pudo encontrar el producto");
                     }
@@ -111,21 +114,21 @@ namespace HBRTEST.DAL
             }
             finally
             {
-                CloseConnection(sqlConnection);
+                DBConnection.CloseConnection(sqlConnection);
             }
         }
 
         public List<ProductEntity> FilterProductsByCategoryName(string CategoryName)
         {
             var lstProducts = GetProducts();
-            var filteredProducts = from products in lstProducts where products.CategoryName.ToLower().Contains(CategoryName.ToLower().Trim()) select products;
+            var filteredProducts = from products in lstProducts where products.CategoryName.ToLower().Contains(CategoryName.ToLower().Trim()) && products.Status == "Active" select products;
             return filteredProducts.ToList();
         }
 
         public List<ProductEntity> FilterProductByProductName(string ProductName)
         {
             var lstProducts = GetProducts();
-            var filteredProducts = from products in lstProducts where products.ProductName.ToLower().Contains(ProductName.ToLower().Trim()) select products;
+            var filteredProducts = from products in lstProducts where products.ProductName.ToLower().Contains(ProductName.ToLower().Trim()) && products.Status == "Active" select products;
             return filteredProducts.ToList();
         }
 
@@ -155,10 +158,11 @@ namespace HBRTEST.DAL
                     command.Parameters.Add(new SqlParameter("@Description", product.Description));
                     command.Parameters.Add(new SqlParameter("@Existence", product.Existence));
                     command.Parameters.Add(new SqlParameter("@Price", product.Price));
-                    command.Parameters.Add(new SqlParameter("@Creation_Date", product.Creation_Date));
-                    command.Parameters.Add(new SqlParameter("@Expire_Date", product.Expire_Date));
+                    command.Parameters.Add(new SqlParameter("@CreationDate", DateTime.Today.ToString()));
+                    command.Parameters.Add(new SqlParameter("@LastModificationDate", DateTime.Today.ToString()));
+                    command.Parameters.Add(new SqlParameter("@Status", product.Status));
                     command.ExecuteNonQuery();
-                    CloseConnection(sqlConnection);
+                    DBConnection.CloseConnection(sqlConnection);
                 }
             }
             catch (Exception exception)
@@ -167,7 +171,7 @@ namespace HBRTEST.DAL
             }
             finally
             {
-                CloseConnection(sqlConnection);
+                DBConnection.CloseConnection(sqlConnection);
             }
         }
 
@@ -200,13 +204,14 @@ namespace HBRTEST.DAL
                     command.Parameters.Add(new SqlParameter("@ProductID", product.ProductId));
                     command.Parameters.Add(new SqlParameter("@CategoryID", product.CategoryId));
                     command.Parameters.Add(new SqlParameter("@ProductName", product.ProductName));
+                    command.Parameters.Add(new SqlParameter("@ProductImage", product.ProductImage));
                     command.Parameters.Add(new SqlParameter("@Description", product.Description));
                     command.Parameters.Add(new SqlParameter("@Existence", product.Existence));
                     command.Parameters.Add(new SqlParameter("@Price", product.Price));
-                    command.Parameters.Add(new SqlParameter("@Creation_Date", product.Creation_Date));
-                    command.Parameters.Add(new SqlParameter("@Expire_Date", product.Expire_Date));
+                    command.Parameters.Add(new SqlParameter("@LastModificationDate", DateTime.Today.ToString()));
+                    command.Parameters.Add(new SqlParameter("@Status", product.Status));
                     command.ExecuteNonQuery();
-                    CloseConnection(sqlConnection);
+                    DBConnection.CloseConnection(sqlConnection);
                 }
             }
             catch(Exception exception)
@@ -215,7 +220,7 @@ namespace HBRTEST.DAL
             }
             finally
             {
-                CloseConnection(sqlConnection);
+                DBConnection.CloseConnection(sqlConnection);
             }
         }
         public void DeleteProduct(int ProductID)
@@ -237,7 +242,7 @@ namespace HBRTEST.DAL
                     command.Parameters.Clear();
                     command.Parameters.Add(new SqlParameter("@ProductID", ProductID));
                     command.ExecuteNonQuery();
-                    CloseConnection(sqlConnection);
+                    DBConnection.CloseConnection(sqlConnection);
                 }
             }
             catch(Exception exception)
@@ -246,7 +251,7 @@ namespace HBRTEST.DAL
             }
             finally
             {
-                CloseConnection(sqlConnection);
+                DBConnection.CloseConnection(sqlConnection);
             }
         }
     }

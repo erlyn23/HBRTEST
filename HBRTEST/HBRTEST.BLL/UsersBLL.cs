@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using HBRTEST.DAL;
-using HBRTEST.Entities;
+using HBRTEST.Domain;
 
 namespace HBRTEST.BLL
 {

@@ -30,8 +30,8 @@
               "C:\\Users\\Lenovo\\Documents\\Visual Studio 2019\\Projects\\HBRTEST\\HBRTEST\\HBRTEST.DAL\\HBRTEST.DAL.csproj": {
                 "projectPath": "C:\\Users\\Lenovo\\Documents\\Visual Studio 2019\\Projects\\HBRTEST\\HBRTEST\\HBRTEST.DAL\\HBRTEST.DAL.csproj"
               },
-              "C:\\Users\\Lenovo\\Documents\\Visual Studio 2019\\Projects\\HBRTEST\\HBRTEST\\HBRTEST.Entities\\HBRTEST.Entities.csproj": {
-                "projectPath": "C:\\Users\\Lenovo\\Documents\\Visual Studio 2019\\Projects\\HBRTEST\\HBRTEST\\HBRTEST.Entities\\HBRTEST.Entities.csproj"
+              "C:\\Users\\Lenovo\\Documents\\Visual Studio 2019\\Projects\\HBRTEST\\HBRTEST\\HBRTEST.Entities\\HBRTEST.Domain.csproj": {
+                "projectPath": "C:\\Users\\Lenovo\\Documents\\Visual Studio 2019\\Projects\\HBRTEST\\HBRTEST\\HBRTEST.Entities\\HBRTEST.Domain.csproj"
               }
             }
           }
@@ -62,7 +62,7 @@
           ],
           "assetTargetFallback": true,
           "warn": true,
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.300\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.402\\RuntimeIdentifierGraph.json"
         }
       }
     },
@@ -89,14 +89,14 @@
         "frameworks": {
           "netstandard2.0": {
             "projectReferences": {
-              "C:\\Users\\Lenovo\\Documents\\Visual Studio 2019\\Projects\\HBRTEST\\HBRTEST\\HBRTEST.Entities\\HBRTEST.Entities.csproj": {
-                "projectPath": "C:\\Users\\Lenovo\\Documents\\Visual Studio 2019\\Projects\\HBRTEST\\HBRTEST\\HBRTEST.Entities\\HBRTEST.Entities.csproj"
+              "C:\\Users\\Lenovo\\Documents\\Visual Studio 2019\\Projects\\HBRTEST\\HBRTEST\\HBRTEST.Entities\\HBRTEST.Domain.csproj": {
+                "projectPath": "C:\\Users\\Lenovo\\Documents\\Visual Studio 2019\\Projects\\HBRTEST\\HBRTEST\\HBRTEST.Entities\\HBRTEST.Domain.csproj"
               },
               "C:\\Users\\Lenovo\\Documents\\Visual Studio 2019\\Projects\\HBRTEST\\HBRTEST\\HBRTEST.ErrorHandling\\HBRTEST.ErrorHandling.csproj": {
                 "projectPath": "C:\\Users\\Lenovo\\Documents\\Visual Studio 2019\\Projects\\HBRTEST\\HBRTEST\\HBRTEST.ErrorHandling\\HBRTEST.ErrorHandling.csproj"
               },
-              "C:\\Users\\Lenovo\\Documents\\Visual Studio 2019\\Projects\\HBRTEST\\HBRTEST\\HBRTEST.Utilities\\HBRTEST.Utilities.csproj": {
-                "projectPath": "C:\\Users\\Lenovo\\Documents\\Visual Studio 2019\\Projects\\HBRTEST\\HBRTEST\\HBRTEST.Utilities\\HBRTEST.Utilities.csproj"
+              "C:\\Users\\Lenovo\\Documents\\Visual Studio 2019\\Projects\\HBRTEST\\HBRTEST\\HBRTEST.Utilities\\HBRTEST.Core.csproj": {
+                "projectPath": "C:\\Users\\Lenovo\\Documents\\Visual Studio 2019\\Projects\\HBRTEST\\HBRTEST\\HBRTEST.Utilities\\HBRTEST.Core.csproj"
               }
             }
           }
@@ -135,16 +135,16 @@
           ],
           "assetTargetFallback": true,
           "warn": true,
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.300\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.402\\RuntimeIdentifierGraph.json"
         }
       }
     },
-    "C:\\Users\\Lenovo\\Documents\\Visual Studio 2019\\Projects\\HBRTEST\\HBRTEST\\HBRTEST.Entities\\HBRTEST.Entities.csproj": {
+    "C:\\Users\\Lenovo\\Documents\\Visual Studio 2019\\Projects\\HBRTEST\\HBRTEST\\HBRTEST.Entities\\HBRTEST.Domain.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Lenovo\\Documents\\Visual Studio 2019\\Projects\\HBRTEST\\HBRTEST\\HBRTEST.Entities\\HBRTEST.Entities.csproj",
-        "projectName": "HBRTEST.Entities",
-        "projectPath": "C:\\Users\\Lenovo\\Documents\\Visual Studio 2019\\Projects\\HBRTEST\\HBRTEST\\HBRTEST.Entities\\HBRTEST.Entities.csproj",
+        "projectUniqueName": "C:\\Users\\Lenovo\\Documents\\Visual Studio 2019\\Projects\\HBRTEST\\HBRTEST\\HBRTEST.Entities\\HBRTEST.Domain.csproj",
+        "projectName": "HBRTEST.Domain",
+        "projectPath": "C:\\Users\\Lenovo\\Documents\\Visual Studio 2019\\Projects\\HBRTEST\\HBRTEST\\HBRTEST.Entities\\HBRTEST.Domain.csproj",
         "packagesPath": "C:\\Users\\Lenovo\\.nuget\\packages\\",
         "outputPath": "C:\\Users\\Lenovo\\Documents\\Visual Studio 2019\\Projects\\HBRTEST\\HBRTEST\\HBRTEST.Entities\\obj\\",
         "projectStyle": "PackageReference",
@@ -190,7 +190,7 @@
           ],
           "assetTargetFallback": true,
           "warn": true,
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.300\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.402\\RuntimeIdentifierGraph.json"
         }
       }
     },
@@ -245,16 +245,16 @@
           ],
           "assetTargetFallback": true,
           "warn": true,
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.300\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.402\\RuntimeIdentifierGraph.json"
         }
       }
     },
-    "C:\\Users\\Lenovo\\Documents\\Visual Studio 2019\\Projects\\HBRTEST\\HBRTEST\\HBRTEST.Utilities\\HBRTEST.Utilities.csproj": {
+    "C:\\Users\\Lenovo\\Documents\\Visual Studio 2019\\Projects\\HBRTEST\\HBRTEST\\HBRTEST.Utilities\\HBRTEST.Core.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Lenovo\\Documents\\Visual Studio 2019\\Projects\\HBRTEST\\HBRTEST\\HBRTEST.Utilities\\HBRTEST.Utilities.csproj",
-        "projectName": "HBRTEST.Utilities",
-        "projectPath": "C:\\Users\\Lenovo\\Documents\\Visual Studio 2019\\Projects\\HBRTEST\\HBRTEST\\HBRTEST.Utilities\\HBRTEST.Utilities.csproj",
+        "projectUniqueName": "C:\\Users\\Lenovo\\Documents\\Visual Studio 2019\\Projects\\HBRTEST\\HBRTEST\\HBRTEST.Utilities\\HBRTEST.Core.csproj",
+        "projectName": "HBRTEST.Core",
+        "projectPath": "C:\\Users\\Lenovo\\Documents\\Visual Studio 2019\\Projects\\HBRTEST\\HBRTEST\\HBRTEST.Utilities\\HBRTEST.Core.csproj",
         "packagesPath": "C:\\Users\\Lenovo\\.nuget\\packages\\",
         "outputPath": "C:\\Users\\Lenovo\\Documents\\Visual Studio 2019\\Projects\\HBRTEST\\HBRTEST\\HBRTEST.Utilities\\obj\\",
         "projectStyle": "PackageReference",
@@ -272,8 +272,8 @@
         "frameworks": {
           "netstandard2.0": {
             "projectReferences": {
-              "C:\\Users\\Lenovo\\Documents\\Visual Studio 2019\\Projects\\HBRTEST\\HBRTEST\\HBRTEST.Entities\\HBRTEST.Entities.csproj": {
-                "projectPath": "C:\\Users\\Lenovo\\Documents\\Visual Studio 2019\\Projects\\HBRTEST\\HBRTEST\\HBRTEST.Entities\\HBRTEST.Entities.csproj"
+              "C:\\Users\\Lenovo\\Documents\\Visual Studio 2019\\Projects\\HBRTEST\\HBRTEST\\HBRTEST.Entities\\HBRTEST.Domain.csproj": {
+                "projectPath": "C:\\Users\\Lenovo\\Documents\\Visual Studio 2019\\Projects\\HBRTEST\\HBRTEST\\HBRTEST.Entities\\HBRTEST.Domain.csproj"
               },
               "C:\\Users\\Lenovo\\Documents\\Visual Studio 2019\\Projects\\HBRTEST\\HBRTEST\\HBRTEST.ErrorHandling\\HBRTEST.ErrorHandling.csproj": {
                 "projectPath": "C:\\Users\\Lenovo\\Documents\\Visual Studio 2019\\Projects\\HBRTEST\\HBRTEST\\HBRTEST.ErrorHandling\\HBRTEST.ErrorHandling.csproj"
@@ -295,6 +295,10 @@
               "target": "Package",
               "version": "[2.0.3, )",
               "autoReferenced": true
+            },
+            "System.Data.SqlClient": {
+              "target": "Package",
+              "version": "[4.4.0, )"
             }
           },
           "imports": [
@@ -307,7 +311,7 @@
           ],
           "assetTargetFallback": true,
           "warn": true,
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.300\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.402\\RuntimeIdentifierGraph.json"
         }
       }
     }

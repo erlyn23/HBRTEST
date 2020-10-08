@@ -6,7 +6,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\HBRTEST.DAL\HBRTEST.DAL.csproj" />
-    <ProjectReference Include="..\HBRTEST.Entities\HBRTEST.Entities.csproj" />
+    <ProjectReference Include="..\HBRTEST.Entities\HBRTEST.Domain.csproj" />
   </ItemGroup>
 
 </Project>

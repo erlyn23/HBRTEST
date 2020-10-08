@@ -3,11 +3,12 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Text;
 using HBRTEST.DAL;
-using HBRTEST.Entities;
+using HBRTEST.Domain;
+using HBRTEST.Core.Interfaces;
 
 namespace HBRTEST.BLL
 {
-    public class CategoriesBLL
+    public class CategoriesBLL: IBLL<CategoryEntity>
     {
         CategoriesDAL _categoriesRepository = new CategoriesDAL();
         public CategoriesBLL()
@@ -15,29 +16,29 @@ namespace HBRTEST.BLL
 
         }
         
-        public List<CategoryEntity> GetCategories()
+        public List<CategoryEntity> GetAll()
         {
             List<CategoryEntity> lstCategories = _categoriesRepository.GetCategories();
             return lstCategories;
         }
 
-        public CategoryEntity GetCategoryById(int CategoryID)
+        public CategoryEntity GetEntityById(int CategoryID)
         {
             CategoryEntity category = _categoriesRepository.GetCategoryById(CategoryID);
             return category;
         }
 
-        public void CreateCategory(CategoryEntity category)
+        public void Add(CategoryEntity category)
         {
             _categoriesRepository.CreateCategory(category);
         }
 
-        public void UpdateCategory(CategoryEntity category)
+        public void Update(CategoryEntity category)
         {
             _categoriesRepository.UpdateCategory(category);
         }
 
-        public void DeleteCategory(int CategoryID)
+        public void Delete(int CategoryID)
         {
            _categoriesRepository.DeleteCategory(CategoryID);
         }

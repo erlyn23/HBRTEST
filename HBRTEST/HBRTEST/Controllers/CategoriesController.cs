@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
+﻿using System.Web.Mvc;
 using HBRTEST.BLL;
-using HBRTEST.Entities;
+using HBRTEST.Domain;
 using HBRTEST.ErrorHandling;
 using HBRTEST.Models;
 
@@ -18,11 +14,11 @@ namespace HBRTEST.Controllers
         [HttpPost]
         public ActionResult GetCategoryById(int CategoryID)
         {
-            if (Request.IsAjaxRequest())
+            if (Request.IsAjaxRequest() && HttpContext.Session["UserID"] != null)
             {
                 try
                 {
-                    CategoryEntity category = _categoryLogic.GetCategoryById(CategoryID);
+                    CategoryEntity category = _categoryLogic.GetEntityById(CategoryID);
                     return Json(category);
                 }
                 catch (PersonalizedException personalizedException)
@@ -37,10 +33,10 @@ namespace HBRTEST.Controllers
         }
         public ActionResult Index()
         {
-            if(Session["UserId"] != null)
+           if(HttpContext.Session["UserID"] != null)
             {
                 CategoryModel categoryModel = new CategoryModel();
-                categoryModel.LstCategories = _categoryLogic.GetCategories();
+                categoryModel.LstCategories = _categoryLogic.GetAll();
                 return View(categoryModel);
             }
             else
@@ -51,18 +47,18 @@ namespace HBRTEST.Controllers
         [HttpPost]
         public ActionResult Index(CategoryModel categoryModel)
         {
-            if (Request.IsAjaxRequest())
+            if (Request.IsAjaxRequest() && HttpContext.Session["UserID"] != null)
             {
                 try
                 {
                     if (categoryModel.CategoryId > 0)
                     {
-                        _categoryLogic.UpdateCategory(categoryModel);
+                        _categoryLogic.Update(categoryModel);
                         return Json("Categoría modificada correctamente");
                     }
                     else
                     {
-                        _categoryLogic.CreateCategory(categoryModel);
+                        _categoryLogic.Add(categoryModel);
                         return Json("Categoría creada correctamente");
                     }
                 }
@@ -80,11 +76,11 @@ namespace HBRTEST.Controllers
         [HttpPost]
         public ActionResult DeleteCategory(int CategoryID)
         {
-            if (Request.IsAjaxRequest())
+            if (Request.IsAjaxRequest() && HttpContext.Session["UserID"] != null)
             {
                 try
                 {
-                    _categoryLogic.DeleteCategory(CategoryID);
+                    _categoryLogic.Delete(CategoryID);
                     return Json("Categoría eliminada correctamente");
                 }
                 catch (PersonalizedException personalizedException)

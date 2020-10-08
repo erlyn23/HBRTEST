@@ -10,7 +10,7 @@
       "HBRTEST.BLL/1.0.0": {
         "dependencies": {
           "HBRTEST.DAL": "1.0.0",
-          "HBRTEST.Entities": "1.0.0",
+          "HBRTEST.Domain": "1.0.0",
           "NETStandard.Library": "2.0.3"
         },
         "runtime": {
@@ -261,11 +261,21 @@
           "System.Runtime": "4.3.0"
         }
       },
+      "HBRTEST.Core/1.0.0": {
+        "dependencies": {
+          "HBRTEST.Domain": "1.0.0",
+          "HBRTEST.ErrorHandling": "1.0.0",
+          "System.Data.SqlClient": "4.4.0"
+        },
+        "runtime": {
+          "HBRTEST.Core.dll": {}
+        }
+      },
       "HBRTEST.DAL/1.0.0": {
         "dependencies": {
-          "HBRTEST.Entities": "1.0.0",
+          "HBRTEST.Core": "1.0.0",
+          "HBRTEST.Domain": "1.0.0",
           "HBRTEST.ErrorHandling": "1.0.0",
-          "HBRTEST.Utilities": "1.0.0",
           "System.Configuration.ConfigurationManager": "4.7.0",
           "System.Data.SqlClient": "4.4.0"
         },
@@ -273,23 +283,14 @@
           "HBRTEST.DAL.dll": {}
         }
       },
-      "HBRTEST.Entities/1.0.0": {
+      "HBRTEST.Domain/1.0.0": {
         "runtime": {
-          "HBRTEST.Entities.dll": {}
+          "HBRTEST.Domain.dll": {}
         }
       },
       "HBRTEST.ErrorHandling/1.0.0": {
         "runtime": {
           "HBRTEST.ErrorHandling.dll": {}
-        }
-      },
-      "HBRTEST.Utilities/1.0.0": {
-        "dependencies": {
-          "HBRTEST.Entities": "1.0.0",
-          "HBRTEST.ErrorHandling": "1.0.0"
-        },
-        "runtime": {
-          "HBRTEST.Utilities.dll": {}
         }
       }
     }
@@ -517,22 +518,22 @@
       "path": "system.threading.tasks/4.3.0",
       "hashPath": "system.threading.tasks.4.3.0.nupkg.sha512"
     },
+    "HBRTEST.Core/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
     "HBRTEST.DAL/1.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""
     },
-    "HBRTEST.Entities/1.0.0": {
+    "HBRTEST.Domain/1.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""
     },
     "HBRTEST.ErrorHandling/1.0.0": {
-      "type": "project",
-      "serviceable": false,
-      "sha512": ""
-    },
-    "HBRTEST.Utilities/1.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""

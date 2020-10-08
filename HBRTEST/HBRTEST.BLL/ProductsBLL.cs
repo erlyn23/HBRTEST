@@ -3,24 +3,25 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Text;
 using HBRTEST.DAL;
-using HBRTEST.Entities;
+using HBRTEST.Domain;
+using HBRTEST.Core.Interfaces;
 
 namespace HBRTEST.BLL
 {
-    public class ProductsBLL
+    public class ProductsBLL: IBLL<ProductEntity>
     {
         private ProductsDAL _productsRepository = new ProductsDAL();
         public ProductsBLL()
         {
 
         }
-        public List<ProductEntity> GetProducts()
+        public List<ProductEntity> GetAll()
         {
             List<ProductEntity> lstProducts = _productsRepository.GetProducts();
             return lstProducts;
         }
 
-        public ProductEntity GetProductById(int ProductID)
+        public ProductEntity GetEntityById(int ProductID)
         {
             ProductEntity product = _productsRepository.GetProductById(ProductID);
             return product; 
@@ -38,17 +39,17 @@ namespace HBRTEST.BLL
             return filteredProducts;
         }
 
-        public void CreateProduct(ProductEntity product)
+        public void Add(ProductEntity product)
         {
             _productsRepository.CreateProduct(product);
         }
 
-        public void UpdateProduct(ProductEntity product)
+        public void Update(ProductEntity product)
         {
            _productsRepository.UpdateProduct(product);
         }
 
-        public void DeleteProduct(int ProductID)
+        public void Delete(int ProductID)
         {
             _productsRepository.DeleteProduct(ProductID);
         }

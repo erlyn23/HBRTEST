@@ -2,8 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Data.SqlClient;
-using HBRTEST.Entities;
+using HBRTEST.Domain;
 using HBRTEST.ErrorHandling;
+using HBRTEST.Core.DBUtilities;
 
 namespace HBRTEST.DAL
 {
@@ -11,16 +12,10 @@ namespace HBRTEST.DAL
     {
         SqlDataReader sqlDataReader;
         DBConnection dbConnection = DBConnection.DbConnectionInstance();
-        sqlCommand commandInstance = sqlCommand.InstanceCommand();
+        Command commandInstance = Command.InstanceCommand();
         public CategoriesDAL()
         {
 
-        }
-
-        private void CloseConnection(SqlConnection connection)
-        {
-            if (connection.State != System.Data.ConnectionState.Closed)
-                connection.Close();
         }
         
         public List<CategoryEntity> GetCategories()
@@ -39,14 +34,19 @@ namespace HBRTEST.DAL
                 sqlDataReader = command.ExecuteReader();
                 while (sqlDataReader.Read())
                 {
-                    CategoryEntity category = new CategoryEntity();
-                    category.CategoryId = sqlDataReader.GetInt32(0);
-                    category.CategoryName = sqlDataReader.GetString(1);
-                    category.Description = sqlDataReader.GetString(2);
+                    CategoryEntity category = new CategoryEntity 
+                    {
+                        CategoryId = sqlDataReader.GetInt32(0),
+                        CategoryName = sqlDataReader.GetString(1),
+                        Description = sqlDataReader.GetString(2),
+                        CreationDate = DateTime.Parse(sqlDataReader.GetString(3)),
+                        LastModificationeDate = DateTime.Parse(sqlDataReader.GetString(4)),
+                        Status = sqlDataReader.GetString(5)
+                    };
                     lstCategories.Add(category);
                 }
                 sqlDataReader.Close();
-                CloseConnection(sqlConnection);
+                DBConnection.CloseConnection(sqlConnection);
                 return lstCategories;
             }
             catch(Exception exception)
@@ -55,7 +55,7 @@ namespace HBRTEST.DAL
             }
             finally
             {
-                CloseConnection(sqlConnection);
+                DBConnection.CloseConnection(sqlConnection);
             }
         }
 
@@ -63,7 +63,7 @@ namespace HBRTEST.DAL
         {
             SqlConnection sqlConnection = dbConnection.GetDbConnection();
             SqlCommand command = commandInstance.GetSqlCommand();
-            CategoryEntity category = new CategoryEntity();
+            CategoryEntity category = null;
 
             try
             {
@@ -82,17 +82,22 @@ namespace HBRTEST.DAL
                     sqlDataReader = command.ExecuteReader();
                     while (sqlDataReader.Read())
                     {
-                        category.CategoryId = sqlDataReader.GetInt32(0);
-                        category.CategoryName = sqlDataReader.GetString(1);
-                        category.Description = sqlDataReader.GetString(2);
+                        category = new CategoryEntity
+                        {
+                            CategoryId = sqlDataReader.GetInt32(0),
+                            CategoryName = sqlDataReader.GetString(1),
+                            Description = sqlDataReader.GetString(2),
+                            CreationDate = DateTime.Parse(sqlDataReader.GetString(3)),
+                            LastModificationeDate = DateTime.Parse(sqlDataReader.GetString(4)),
+                            Status = sqlDataReader.GetString(5)
+                        };
                     }
                     sqlDataReader.Close();
-                    CloseConnection(sqlConnection);
+                    DBConnection.CloseConnection(sqlConnection);
                     if (category == null)
                     {
                         throw new PersonalizedException("Categoría no encontrada");
                     }
-
                     return category;
                 }
             }
@@ -102,7 +107,7 @@ namespace HBRTEST.DAL
             }
             finally
             {
-                CloseConnection(sqlConnection);
+                DBConnection.CloseConnection(sqlConnection);
             }
         }
         public void CreateCategory(CategoryEntity category)
@@ -134,8 +139,11 @@ namespace HBRTEST.DAL
                     command.Parameters.Clear();
                     command.Parameters.Add(new SqlParameter("@CategoryName", category.CategoryName));
                     command.Parameters.Add(new SqlParameter("@Description", category.Description));
+                    command.Parameters.Add(new SqlParameter("@CreationDate", DateTime.Today.ToString()));
+                    command.Parameters.Add(new SqlParameter("@LastModificationDate", DateTime.Today.ToString()));
+                    command.Parameters.Add(new SqlParameter("@Status", "Activo"));
                     command.ExecuteNonQuery();
-                    CloseConnection(sqlConnection);
+                    DBConnection.CloseConnection(sqlConnection);
                 }
             }
             catch(Exception exception)
@@ -144,7 +152,7 @@ namespace HBRTEST.DAL
             }
             finally
             {
-                CloseConnection(sqlConnection);
+                DBConnection.CloseConnection(sqlConnection);
             }
         }
        
@@ -173,12 +181,12 @@ namespace HBRTEST.DAL
                         if (!string.IsNullOrEmpty(sqlDataReader.GetString(0)))
                         {
                             sqlDataReader.Close();
-                            CloseConnection(sqlConnection);
+                            DBConnection.CloseConnection(sqlConnection);
                             return true;
                         }
                     }
                     sqlDataReader.Close();
-                    CloseConnection(sqlConnection);
+                    DBConnection.CloseConnection(sqlConnection);
                     return false;
                 }
             }
@@ -188,7 +196,7 @@ namespace HBRTEST.DAL
             }
             finally
             {
-                CloseConnection(sqlConnection);
+                DBConnection.CloseConnection(sqlConnection);
             }
         }
         public void UpdateCategory(CategoryEntity category)
@@ -219,8 +227,10 @@ namespace HBRTEST.DAL
                     command.Parameters.Add(new SqlParameter("@CategoryID", category.CategoryId));
                     command.Parameters.Add(new SqlParameter("@CategoryName", category.CategoryName));
                     command.Parameters.Add(new SqlParameter("@Description", category.Description));
+                    command.Parameters.Add(new SqlParameter("@LastModificationDate", DateTime.Today.ToString()));
+                    command.Parameters.Add(new SqlParameter("@Status", "Activo"));
                     command.ExecuteNonQuery();
-                    CloseConnection(sqlConnection);
+                    DBConnection.CloseConnection(sqlConnection);
                 }
             }
             catch (Exception exception)
@@ -229,7 +239,7 @@ namespace HBRTEST.DAL
             }
             finally
             {
-                CloseConnection(sqlConnection);
+                DBConnection.CloseConnection(sqlConnection);
             }
         }
 
@@ -252,7 +262,7 @@ namespace HBRTEST.DAL
                     command.Parameters.Clear();
                     command.Parameters.Add(new SqlParameter("@CategoryID", CategoryID));
                     command.ExecuteNonQuery();
-                    CloseConnection(sqlConnection);
+                    DBConnection.CloseConnection(sqlConnection);
                 }                    
             }
             catch(Exception exception)
@@ -261,9 +271,8 @@ namespace HBRTEST.DAL
             }
             finally
             {
-                CloseConnection(sqlConnection);
+                DBConnection.CloseConnection(sqlConnection);
             }
-
         }
     }
 }

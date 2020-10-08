@@ -1,38 +1,39 @@
-﻿@model HBRTEST.Entities.UserEntity 
+﻿@model HBRTEST.Domain.UserEntity
 @{
     ViewBag.Title = "Iniciar Sesión";
     Layout = "~/Views/Shared/_AccountLayout.cshtml";
 }
 
-    <script src="~/Scripts/Views/request.js"></script>
-    <script src="~/Scripts/Views/Users/SignIn.js"></script>
+<div class="container">
+    <div class="row mt-3">
+        <div class="col-md-4"></div>
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-header text-center"><h3>Iniciar Sesión</h3></div>
+                <div class="card-body">
+                    <form id="LoginForm">
+                        <div class="form-group">
+                            <label for="UserName">Nombre de usuario:</label>
+                            @Html.TextBoxFor(user => user.UserName, new { @class = "form-control", required=true, placeholder = "Escribe tu nombre de usuario" })
+                        </div>
+                        <div id="errorMessageUserName" class="text-danger d-none"></div>
+                        <div class="form-group">
+                            <label for="Password">Contraseña:</label>
+                            @Html.PasswordFor(user => user.Password, new { @class = "form-control", required=true, placeholder = "Escribe tu contraseña" })
+                        </div>
+                        <div id="errorMessagePassword" class="text-danger d-none"></div>
+                        <div id="errorMessage" class="alert alert-danger d-none" role="alert"></div>
+                        <div class="text-center">
+                            <button type="button" class="btn btn-block btn-success" id="SignIn"><i class="fas fa-sign-in-alt"></i>&nbsp; Entrar</button>
+                        </div>
+                    </form>
 
-    <div class="container">
-        <div class="row mt-3">
-            <div class="col-md-4"></div>
-            <div class="col-md-4">
-                <div class="card">
-                    <div class="card-header text-center"><h3>Iniciar Sesión</h3></div>
-                    <div class="card-body">
-                        <form>
-                            <div class="form-group">
-                                <label for="UserName">Nombre de usuario:</label>
-                                @Html.TextBoxFor(user => user.UserName, new { @class = "form-control", placeholder = "Escribe tu nombre de usuario" })
-                            </div>
-                            <div class="form-group">
-                                <label for="Password">Contraseña:</label>
-                                @Html.PasswordFor(user => user.Password, new { @class = "form-control", placeholder = "Escribe tu contraseña" })
-                            </div>
-                            <div class="alert alert-danger d-none" id="errorMessage" role="alert"></div>
-                            <div class="text-center">
-                                <button type="button" class="btn btn-block btn-success" id="SignIn"><i class="fas fa-sign-in"></i>&nbsp; Entrar</button>
-                            </div>
-                        </form>
-
-                        <p>¿No posees una cuenta? @Html.ActionLink("Regístrate aquí", "CreateUser", "Users")</p>
-                    </div>
+                    <p>¿No posees una cuenta? @Html.ActionLink("Regístrate aquí", "CreateUser", "Users")</p>
                 </div>
             </div>
-            <div class="col-md-4"></div>
         </div>
+        <div class="col-md-4"></div>
     </div>
+</div>
+
+<script src="~/Scripts/Views/Users/SignIn.js"></script>

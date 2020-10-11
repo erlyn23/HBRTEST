@@ -27,15 +27,9 @@ namespace HBRTEST.BLL
             return product; 
         }
 
-        public List<ProductEntity> FilterProductsByCategoryName(int categoryId)
+        public List<ProductEntity> FilterProducts(int categoryId, string productName)
         {
-            List<ProductEntity> filteredProducts = _productsRepository.FilterProductsByCategoryName(categoryId);
-            return filteredProducts;
-        }
-
-        public List<ProductEntity> FilterProductsByProductName(string ProductName)
-        {
-            List<ProductEntity> filteredProducts = _productsRepository.FilterProductByProductName(ProductName);
+            List<ProductEntity> filteredProducts = _productsRepository.FilterProducts(categoryId, productName);
             return filteredProducts;
         }
 

@@ -1,0 +1,32 @@
+﻿@model HBRTEST.Domain.ProductEntity
+@{
+    ViewBag.Title = "Detalles del producto";
+    Layout = "~/Views/Shared/_ProductsLayout.cshtml";
+}
+
+<div class="container">
+    <div class="row mt-3">
+        <div class="col-md-3"></div>
+        <div class="col-md-6 mb-3">
+            <div class="card">
+                @{ string productImagePath = "https://localhost:44375" + Model.ProductImage;}
+                <img src="@productImagePath" alt="Imagen del producto" class="card-img-top" />
+                <div class="card-body">
+                    <h5 class="card-title text-center">@Model.ProductName</h5>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item"><b>Descripción: </b>@Model.Description</li>
+                        <li class="list-group-item"><b>Categoría: </b>@Model.CategoryName</li>
+                        <li class="list-group-item"><b>Existencia: </b>@Model.Existence</li>
+                        <li class="list-group-item"><b>Fecha de publicación: </b>@Model.CreationDate</li>
+                        <li class="list-group-item"><b>Última fecha de actualización: </b>@Model.LastModificationDate</li>
+                        <li class="list-group-item"><b>Precio: </b> <span class="text-success">RD$@Model.Price</span></li>
+                    </ul>
+                    <div class="text-center">
+                        <a class="btn btn-outline-danger" href="/Products/Index">Volver atrás</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3"></div>
+    </div>
+</div>

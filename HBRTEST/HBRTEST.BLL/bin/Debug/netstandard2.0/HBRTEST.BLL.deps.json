@@ -263,7 +263,6 @@
       },
       "HBRTEST.Core/1.0.0": {
         "dependencies": {
-          "HBRTEST.Domain": "1.0.0",
           "HBRTEST.ErrorHandling": "1.0.0",
           "System.Data.SqlClient": "4.4.0"
         },

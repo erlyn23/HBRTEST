@@ -49,6 +49,7 @@
         }
         if (json.ProductId > 0 || json.CategoryId > 0 || json.ProductName.length > 0 || json.Description.length > 0
             || json.Existence.length > 0 || json.Price.length > 0) {
+            $("#titleText").text("Registrar producto");
             $("#ProductId").val(0);
             $("#CategoryId").val("");
             $("#ProductName").val("");

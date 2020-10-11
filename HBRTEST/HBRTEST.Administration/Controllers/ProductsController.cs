@@ -7,6 +7,7 @@ using HBRTEST.Models;
 using HBRTEST.BLL;
 using HBRTEST.ErrorHandling;
 using HBRTEST.Domain;
+using System.IO;
 
 namespace HBRTEST.Controllers
 {
@@ -85,18 +86,34 @@ namespace HBRTEST.Controllers
         public ActionResult UploadImage()
         {
             string result = string.Empty;
-            if (Request.Files.Count > 0)
+            try
             {
-                for (int i = 0; i < Request.Files.Count; i++)
+                if (Request.Files.Count > 0)
                 {
-                    var imageData = Request.Files[0];
-                    string imageName = imageData.FileName;
-                    Random random = new Random();
-                    int randomCode = random.Next(3000);
-                    string imagePath = String.Format("/ProductsImages/{0}_{1}", randomCode, imageName);
-                    imageData.SaveAs(Server.MapPath(imagePath));
-                    result = imagePath;
+                    for (int i = 0; i < Request.Files.Count; i++)
+                    {
+                        var imageData = Request.Files[0];
+                        string imageName = imageData.FileName;
+                        Random random = new Random();
+                        int randomCode = random.Next(3000);
+                        string imagePath = String.Format("/ProductsImages/{0}_{1}", randomCode, imageName);
+
+                        if (Directory.Exists("/ProductsImages/"))
+                        {
+                            imageData.SaveAs(Server.MapPath(imagePath));
+                        }
+                        else
+                        {
+                            Directory.CreateDirectory(Server.MapPath("/ProductsImages/"));
+                            imageData.SaveAs(Server.MapPath(imagePath));
+                        }
+                        result = imagePath;
+                    }
                 }
+            }
+            catch(Exception exception)
+            {
+                throw new PersonalizedException(exception.ToString());
             }
             return Json(result);
         }

@@ -1,0 +1,61 @@
+﻿@model HBRTEST.Frontend.Models.ProductsModel
+@{
+    ViewBag.Title = "HBRTEST | Productos";
+    Layout = "~/Views/Shared/_ProductsLayout.cshtml";
+
+    HBRTEST.BLL.CategoriesBLL categoryLogic = new HBRTEST.BLL.CategoriesBLL();
+    HBRTEST.Frontend.Models.CategoryModel categoryModel = new HBRTEST.Frontend.Models.CategoryModel();
+    categoryModel.LstCategories = categoryLogic.GetAll();
+}
+
+<script src="~/Scripts/Views/Products/ProductActions.js"></script>
+<script src="~/Scripts/Views/Products/Script.js"></script>
+
+<div class="container">
+    <form class="mt-3">
+        <div class="row">
+            <div class="col-md-3">
+                <select class="form-control" id="CategoryID" name="CategoryID">
+                    <option selected value="0" disabled>Selecciona una categoría</option>
+                    @foreach (var category in categoryModel.LstCategories)
+                    {
+                        <option value="@category.CategoryId">@category.CategoryName</option>
+                    }
+                </select>
+            </div>
+            <div class="col-md-3">
+                <input type="search" id="ProductName" name="ProductName" class="form-control mr-sm-2" placeholder="Buscar producto" />
+            </div>
+            <div class="col-md-3">
+                <button class="btn btn-outline-success" type="button" id="SearchProduct">Buscar</button>
+            </div>
+            <div class="col-md-3">
+                <a class="btn btn-outline-danger" href="/Products/Index">Reiniciar búsqueda</a>
+            </div>
+        </div>
+    </form>
+
+
+    <div id="productsContainer">
+        <div class="row mt-3" id="productsRow">
+            @foreach (var product in Model.LstProducts)
+            {
+                if (product.Active)
+                {
+                    string imagePath = "https://localhost:44375" + product.ProductImage;
+                    <div class="col-md-4 mt-3">
+                        <div class="card" style="width: 18rem;">
+                            <img src="@imagePath" class="card-img-top" alt="imagen del producto" style="width: 17.9rem; height: 15rem;">
+                            <div class="card-body">
+                                <h5 class="card-title">@product.ProductName</h5>
+                                <p class="card-text">@product.Description</p>
+                                <p>Precio: <b class="text-success">RD$ @product.Price</b></p>
+                                <a href="/Products/ProductsDetail?productId=@product.ProductId" class="btn btn-primary">Ver detalles</a>
+                            </div>
+                        </div>
+                    </div>
+                }
+            }
+        </div>
+    </div>
+</div>

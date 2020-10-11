@@ -120,18 +120,33 @@ namespace HBRTEST.DAL
             }
         }
 
-        public List<ProductEntity> FilterProductsByCategoryName(int categoryId)
+        public List<ProductEntity> FilterProducts(int categoryId, string productName)
         {
             var lstProducts = GetProducts();
-            var filteredProducts = from products in lstProducts where products.CategoryId == categoryId  select products;
-            return filteredProducts.ToList();
-        }
-
-        public List<ProductEntity> FilterProductByProductName(string ProductName)
-        {
-            var lstProducts = GetProducts();
-            var filteredProducts = from products in lstProducts where products.ProductName.ToLower().Contains(ProductName.ToLower().Trim()) select products;
-            return filteredProducts.ToList();
+            if (!string.IsNullOrEmpty(productName) && categoryId > 0)
+            {
+                var filteredProducts = from products in lstProducts where products.CategoryId == categoryId 
+                                       && products.ProductName.ToLower().Contains(productName.ToLower().Trim())
+                                       && products.Active
+                                       select products;
+                
+                return filteredProducts.ToList();
+            }
+            else if(categoryId > 0 && string.IsNullOrEmpty(productName))
+            {
+                var filteredProducts = from products in lstProducts where
+                                       products.CategoryId == categoryId && products.Active 
+                                       select products;
+                return filteredProducts.ToList();
+            }
+            else if(categoryId <= 0 && !string.IsNullOrEmpty(productName))
+            {
+                var filteredProducts = from products in lstProducts where 
+                                       products.ProductName.ToLower().Contains(productName.ToLower().Trim())
+                                       select products;
+                return filteredProducts.ToList();
+            }
+            return lstProducts.Where(products => products.Active).ToList();
         }
 
         public void CreateProduct(ProductEntity product)
@@ -157,8 +172,22 @@ namespace HBRTEST.DAL
                     command.Parameters.Clear();
                     command.Parameters.Add(new SqlParameter("@CategoryID", product.CategoryId));
                     command.Parameters.Add(new SqlParameter("@ProductName", product.ProductName));
-                    command.Parameters.Add(new SqlParameter("@ProductImage", product.ProductImage));
-                    command.Parameters.Add(new SqlParameter("@Description", product.Description));
+                    if (string.IsNullOrEmpty(product.ProductImage))
+                    {
+                        command.Parameters.Add(new SqlParameter("@ProductImage", ""));
+                    }
+                    else
+                    {
+                        command.Parameters.Add(new SqlParameter("@ProductImage", product.ProductImage));
+                    }
+                    if (string.IsNullOrEmpty(product.Description))
+                    {
+                        command.Parameters.Add(new SqlParameter("@Description", ""));
+                    }
+                    else
+                    {
+                        command.Parameters.Add(new SqlParameter("@Description", product.Description));
+                    }
                     command.Parameters.Add(new SqlParameter("@Existence", product.Existence));
                     command.Parameters.Add(new SqlParameter("@Price", product.Price));
                     command.Parameters.Add(new SqlParameter("@CreationDate", DateTime.Today));
@@ -207,7 +236,14 @@ namespace HBRTEST.DAL
                     command.Parameters.Add(new SqlParameter("@ProductID", product.ProductId));
                     command.Parameters.Add(new SqlParameter("@CategoryID", product.CategoryId));
                     command.Parameters.Add(new SqlParameter("@ProductName", product.ProductName));
-                    command.Parameters.Add(new SqlParameter("@Description", product.Description));
+                    if (string.IsNullOrEmpty(product.Description))
+                    {
+                        command.Parameters.Add(new SqlParameter("@Description", ""));
+                    }
+                    else
+                    {
+                        command.Parameters.Add(new SqlParameter("@Description", product.Description));
+                    }
                     command.Parameters.Add(new SqlParameter("@Existence", product.Existence));
                     command.Parameters.Add(new SqlParameter("@Price", product.Price));
                     command.Parameters.Add(new SqlParameter("@LastModificationDate", DateTime.Today));

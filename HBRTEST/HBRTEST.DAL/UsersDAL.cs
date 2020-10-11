@@ -51,9 +51,9 @@ namespace HBRTEST.DAL
                             Email = sqlDataReader.GetString(5),
                             UserName = sqlDataReader.GetString(6),
                             Password = sqlDataReader.GetString(7),
-                            CreationDate = DateTime.Parse(sqlDataReader.GetString(8)),
-                            LastModificationDate = DateTime.Parse(sqlDataReader.GetString(9)),
-                            Status = sqlDataReader.GetString(10)
+                            CreationDate = sqlDataReader.GetDateTime(8),
+                            LastModificationDate = sqlDataReader.GetDateTime(9),
+                            Active = sqlDataReader.GetBoolean(10)
                        };
                     }
                     sqlDataReader.Close();
@@ -109,9 +109,9 @@ namespace HBRTEST.DAL
                     command.Parameters.Add(new SqlParameter("@Email", user.Email));
                     command.Parameters.Add(new SqlParameter("@UserName", user.UserName));
                     command.Parameters.Add(new SqlParameter("@Password", PasswordEncrypt.Encrypt(user.Password)));
-                    command.Parameters.Add(new SqlParameter("@CreationDate", DateTime.Today.ToString()));
-                    command.Parameters.Add(new SqlParameter("@LastModificationDate", DateTime.Today.ToString()));
-                    command.Parameters.Add(new SqlParameter("@Status", "Activo"));
+                    command.Parameters.Add(new SqlParameter("@CreationDate", DateTime.Today));
+                    command.Parameters.Add(new SqlParameter("@LastModificationDate", DateTime.Today));
+                    command.Parameters.Add(new SqlParameter("@Active", true));
                     command.ExecuteNonQuery();
                     DBConnection.CloseConnection(sqlConnection);
                 }
@@ -214,7 +214,7 @@ namespace HBRTEST.DAL
                         {
                             UserId = sqlDataReader.GetInt32(0),
                             UserName = sqlDataReader.GetString(6),
-                            Status = sqlDataReader.GetString(10)
+                            Active = sqlDataReader.GetBoolean(10)
                         };
                     }
                     sqlDataReader.Close();
@@ -277,8 +277,8 @@ namespace HBRTEST.DAL
                 {
                     command.Parameters.Add(new SqlParameter("@Password", oldUser.Password));
                 }
-                command.Parameters.Add(new SqlParameter("@LastModificationDate", DateTime.Today.ToString()));
-                command.Parameters.Add(new SqlParameter("@Status", user.Status));
+                command.Parameters.Add(new SqlParameter("@LastModificationDate", DateTime.Today));
+                command.Parameters.Add(new SqlParameter("@Active", user.Active));
                 command.ExecuteNonQuery();
                 DBConnection.CloseConnection(sqlConnection);
             }

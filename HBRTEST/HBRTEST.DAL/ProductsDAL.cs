@@ -35,18 +35,19 @@ namespace HBRTEST.DAL
                 sqlDataReader = command.ExecuteReader();
                 while (sqlDataReader.Read())
                 {
-                    ProductEntity product = new ProductEntity 
-                    { 
+                    ProductEntity product = new ProductEntity
+                    {
                         ProductId = sqlDataReader.GetInt32(0),
                         CategoryId = sqlDataReader.GetInt32(1),
                         ProductName = sqlDataReader.GetString(2),
                         CategoryName = sqlDataReader.GetString(3),
-                        Description = sqlDataReader.GetString(4),
-                        Existence = sqlDataReader.GetInt32(5),
-                        Price = sqlDataReader.GetFloat(6),
-                        CreationDate = DateTime.Parse(sqlDataReader.GetString(7)),
-                        LastModificationDate = DateTime.Parse(sqlDataReader.GetString(8)),
-                        Status = sqlDataReader.GetString(9)
+                        ProductImage = sqlDataReader.GetString(4),
+                        Description = sqlDataReader.GetString(5),
+                        Existence = sqlDataReader.GetInt32(6),
+                        Price = float.Parse(sqlDataReader.GetDecimal(7).ToString()),
+                        CreationDate = sqlDataReader.GetDateTime(8),
+                        LastModificationDate = sqlDataReader.GetDateTime(9),
+                        Active = sqlDataReader.GetBoolean(10)
                     };
                     lstProducts.Add(product);
                 }
@@ -91,12 +92,13 @@ namespace HBRTEST.DAL
                             CategoryId = sqlDataReader.GetInt32(1),
                             ProductName = sqlDataReader.GetString(2),
                             CategoryName = sqlDataReader.GetString(3),
-                            Description = sqlDataReader.GetString(4),
-                            Existence = sqlDataReader.GetInt32(5),
-                            Price = sqlDataReader.GetFloat(6),
-                            CreationDate = DateTime.Parse(sqlDataReader.GetString(7)),
-                            LastModificationDate = DateTime.Parse(sqlDataReader.GetString(8)),
-                            Status = sqlDataReader.GetString(9)
+                            ProductImage = sqlDataReader.GetString(4),
+                            Description = sqlDataReader.GetString(5),
+                            Existence = sqlDataReader.GetInt32(6),
+                            Price = float.Parse(sqlDataReader.GetDecimal(7).ToString()),
+                            CreationDate = sqlDataReader.GetDateTime(8),
+                            LastModificationDate = sqlDataReader.GetDateTime(9),
+                            Active = sqlDataReader.GetBoolean(10)
                         };
                     }
                     sqlDataReader.Close();
@@ -118,17 +120,17 @@ namespace HBRTEST.DAL
             }
         }
 
-        public List<ProductEntity> FilterProductsByCategoryName(string CategoryName)
+        public List<ProductEntity> FilterProductsByCategoryName(int categoryId)
         {
             var lstProducts = GetProducts();
-            var filteredProducts = from products in lstProducts where products.CategoryName.ToLower().Contains(CategoryName.ToLower().Trim()) && products.Status == "Active" select products;
+            var filteredProducts = from products in lstProducts where products.CategoryId == categoryId  select products;
             return filteredProducts.ToList();
         }
 
         public List<ProductEntity> FilterProductByProductName(string ProductName)
         {
             var lstProducts = GetProducts();
-            var filteredProducts = from products in lstProducts where products.ProductName.ToLower().Contains(ProductName.ToLower().Trim()) && products.Status == "Active" select products;
+            var filteredProducts = from products in lstProducts where products.ProductName.ToLower().Contains(ProductName.ToLower().Trim()) select products;
             return filteredProducts.ToList();
         }
 
@@ -155,12 +157,13 @@ namespace HBRTEST.DAL
                     command.Parameters.Clear();
                     command.Parameters.Add(new SqlParameter("@CategoryID", product.CategoryId));
                     command.Parameters.Add(new SqlParameter("@ProductName", product.ProductName));
+                    command.Parameters.Add(new SqlParameter("@ProductImage", product.ProductImage));
                     command.Parameters.Add(new SqlParameter("@Description", product.Description));
                     command.Parameters.Add(new SqlParameter("@Existence", product.Existence));
                     command.Parameters.Add(new SqlParameter("@Price", product.Price));
-                    command.Parameters.Add(new SqlParameter("@CreationDate", DateTime.Today.ToString()));
-                    command.Parameters.Add(new SqlParameter("@LastModificationDate", DateTime.Today.ToString()));
-                    command.Parameters.Add(new SqlParameter("@Status", product.Status));
+                    command.Parameters.Add(new SqlParameter("@CreationDate", DateTime.Today));
+                    command.Parameters.Add(new SqlParameter("@LastModificationDate", DateTime.Today));
+                    command.Parameters.Add(new SqlParameter("@Active", product.Active));
                     command.ExecuteNonQuery();
                     DBConnection.CloseConnection(sqlConnection);
                 }
@@ -204,12 +207,11 @@ namespace HBRTEST.DAL
                     command.Parameters.Add(new SqlParameter("@ProductID", product.ProductId));
                     command.Parameters.Add(new SqlParameter("@CategoryID", product.CategoryId));
                     command.Parameters.Add(new SqlParameter("@ProductName", product.ProductName));
-                    command.Parameters.Add(new SqlParameter("@ProductImage", product.ProductImage));
                     command.Parameters.Add(new SqlParameter("@Description", product.Description));
                     command.Parameters.Add(new SqlParameter("@Existence", product.Existence));
                     command.Parameters.Add(new SqlParameter("@Price", product.Price));
-                    command.Parameters.Add(new SqlParameter("@LastModificationDate", DateTime.Today.ToString()));
-                    command.Parameters.Add(new SqlParameter("@Status", product.Status));
+                    command.Parameters.Add(new SqlParameter("@LastModificationDate", DateTime.Today));
+                    command.Parameters.Add(new SqlParameter("@Active", product.Active));
                     command.ExecuteNonQuery();
                     DBConnection.CloseConnection(sqlConnection);
                 }

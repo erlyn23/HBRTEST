@@ -8,7 +8,7 @@ using HBRTEST.Core.Interfaces;
 
 namespace HBRTEST.BLL
 {
-    public class CategoriesBLL: IBLL<CategoryEntity>
+    public class CategoriesBLL: IRepository<CategoryEntity>
     {
         CategoriesDAL _categoriesRepository = new CategoriesDAL();
         public CategoriesBLL()

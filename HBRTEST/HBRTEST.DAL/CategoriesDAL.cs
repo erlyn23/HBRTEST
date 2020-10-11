@@ -38,10 +38,7 @@ namespace HBRTEST.DAL
                     {
                         CategoryId = sqlDataReader.GetInt32(0),
                         CategoryName = sqlDataReader.GetString(1),
-                        Description = sqlDataReader.GetString(2),
-                        CreationDate = DateTime.Parse(sqlDataReader.GetString(3)),
-                        LastModificationeDate = DateTime.Parse(sqlDataReader.GetString(4)),
-                        Status = sqlDataReader.GetString(5)
+                        Description = sqlDataReader.GetString(2)
                     };
                     lstCategories.Add(category);
                 }
@@ -86,10 +83,7 @@ namespace HBRTEST.DAL
                         {
                             CategoryId = sqlDataReader.GetInt32(0),
                             CategoryName = sqlDataReader.GetString(1),
-                            Description = sqlDataReader.GetString(2),
-                            CreationDate = DateTime.Parse(sqlDataReader.GetString(3)),
-                            LastModificationeDate = DateTime.Parse(sqlDataReader.GetString(4)),
-                            Status = sqlDataReader.GetString(5)
+                            Description = sqlDataReader.GetString(2)
                         };
                     }
                     sqlDataReader.Close();
@@ -139,9 +133,9 @@ namespace HBRTEST.DAL
                     command.Parameters.Clear();
                     command.Parameters.Add(new SqlParameter("@CategoryName", category.CategoryName));
                     command.Parameters.Add(new SqlParameter("@Description", category.Description));
-                    command.Parameters.Add(new SqlParameter("@CreationDate", DateTime.Today.ToString()));
-                    command.Parameters.Add(new SqlParameter("@LastModificationDate", DateTime.Today.ToString()));
-                    command.Parameters.Add(new SqlParameter("@Status", "Activo"));
+                    command.Parameters.Add(new SqlParameter("@CreationDate", DateTime.Today));
+                    command.Parameters.Add(new SqlParameter("@LastModificationDate", DateTime.Today));
+                    command.Parameters.Add(new SqlParameter("@Active", true));
                     command.ExecuteNonQuery();
                     DBConnection.CloseConnection(sqlConnection);
                 }
@@ -227,8 +221,8 @@ namespace HBRTEST.DAL
                     command.Parameters.Add(new SqlParameter("@CategoryID", category.CategoryId));
                     command.Parameters.Add(new SqlParameter("@CategoryName", category.CategoryName));
                     command.Parameters.Add(new SqlParameter("@Description", category.Description));
-                    command.Parameters.Add(new SqlParameter("@LastModificationDate", DateTime.Today.ToString()));
-                    command.Parameters.Add(new SqlParameter("@Status", "Activo"));
+                    command.Parameters.Add(new SqlParameter("@LastModificationDate", DateTime.Today));
+                    command.Parameters.Add(new SqlParameter("@Active", true));
                     command.ExecuteNonQuery();
                     DBConnection.CloseConnection(sqlConnection);
                 }

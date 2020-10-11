@@ -1,0 +1,91 @@
+﻿@model HBRTEST.Domain.UserEntity
+@{
+    ViewBag.Title = "Registrarme";
+    Layout = "~/Views/Shared/_AccountLayout.cshtml";
+}
+
+<style type="text/css">
+
+    input::-webkit-outer-spin-button,
+    input::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+
+    input[type=number] {
+        -moz-appearance: textfield;
+    }
+</style>
+
+<div class="container">
+    <div class="row mt-3">
+        <div class="col-md-2"></div>
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header text-white bg-dark text-center"><h3>Formulario de registro</h3></div>
+                <div class="card-body">
+                    <form id="CreateUserForm">
+                        <div class="row">
+                            <div class="form-group col-md-4">
+                                <label for="FirstName">Nombre:</label>
+                                @Html.TextBoxFor(user => user.FirstName, new { @class = "form-control", required = true, placeholder = "Escribe tu nombre" })
+                                <div id="errorMessageFirstName" class="text-danger d-none"></div>
+                            </div>
+                            <div class="form-group col-md-4">
+                                <label for="LastName">Apellido:</label>
+                                @Html.TextBoxFor(user => user.LastName, new { @class = "form-control", required = true, placeholder = "Escribe tu apellido" })
+                                <div id="errorMessageLastName" class="text-danger d-none"></div>
+                            </div>
+                           
+                            <div class="form-group col-md-4">
+                                <label for="CellPhone">Teléfono:</label>
+                                @Html.TextBoxFor(user => user.CellPhone, new { @class = "form-control", required = true, placeholder = "Escribe tu teléfono" })
+                                <div id="errorMessageCellPhone" class="text-danger d-none"></div>
+                            </div>
+                            
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-md-4">
+                                <label for="Genre">Género:</label>
+                                <select class="form-control" id="Genre" name="Genre" required>
+                                    <option disabled value="">Selecciona tu género</option>
+                                    <option value="F">F</option>
+                                    <option value="M">M</option>
+                                </select>
+                                <div id="errorMessageGenre" class="text-danger d-none"></div>
+                            </div>
+                            
+                            <div class="form-group col-md-4">
+                                <label for="Email">Correo electrónico:</label>
+                                @Html.TextBoxFor(user => user.Email, new { @class = "form-control", required = true, placeholder = "Escribe tu correo electrónico", @type = "email" })
+                                <div id="errorMessageEmail" class="text-danger d-none"></div>
+                            </div>
+                            
+                            <div class="form-group col-md-4">
+                                <label for="UserName">Nombre de usuario:</label>
+                                @Html.TextBoxFor(user => user.UserName, new { @class = "form-control", required = true, placeholder = "Escribe tu nombre de usuario" })
+                                <div id="errorMessageUserName" class="text-danger d-none"></div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-md-4">
+                                <label for="Password">Contraseña:</label>
+                                @Html.PasswordFor(user => user.Password, new { @class = "form-control", required = true, placeholder = "Escribe tu contraseña" })
+                                <div id="errorMessagePassword" class="text-danger d-none"></div>
+                            </div>
+                            
+                        </div>
+                        <div class="text-center">
+                            <button type="button" class="btn btn-success" id="CreateUser">Registrarme</button>
+                        </div>
+                    </form>
+                    <p>¿Ya posees una cuenta? @Html.ActionLink("Inicia sesión aquí", "Index", "Users")</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-2"></div>
+    </div>
+</div>
+
+
+<script src="~/Scripts/Views/Users/CreateUser.js"></script>

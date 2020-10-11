@@ -1,0 +1,63 @@
+﻿@model HBRTEST.Domain.ProductEntity
+@{
+    ViewBag.Title = "DetailsProduct";
+    Layout = "~/Views/Shared/_SystemLayout.cshtml";
+}
+
+    <div class="container">
+        <div class="row mt-4">
+            <div class="col-md-12">
+                <div class="card">
+                    @if (!string.IsNullOrEmpty(ViewBag.Error))
+                    {
+                        <div class="alert alert-danger" role="alert">
+                            <p>@ViewBag.Error</p>
+                        </div>
+                    }
+                    <div class="row no-gutters">
+                        <div class="col-md-4">
+                            <img src="@Model.ProductImage" class="card-img" width="300" height="300" />
+                        </div>
+                        <div class="col-md-8">
+                            <div class="card-body">
+                                <h4 class="card-title">Detalles del producto</h4>
+                                <div class="row">
+                                    <div class="col-md-6"><b>Nombre del producto: </b>@Model.ProductName</div>
+                                    <div class="col-md-6"><b>Categoría: </b>@Model.CategoryName</div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6"><b>Descripción: </b>@Model.Description</div>
+                                    <div class="col-md-6"><b>Existencia: </b>@Model.Existence</div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6"><b>Precio: </b>RD$@Model.Price</div>
+                                    <div class="col-md-6"><b>Fecha de creación: </b>@Model.CreationDate</div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <b>Estado: </b>
+                                        @if (Model.Active)
+                                        {
+                                            <span>Activo</span>
+                                        }
+                                        else
+                                        {
+                                            <span>Inactivo</span>
+                                        }
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-4"></div>
+                                    <div class="col-md-4">
+                                        <a class="btn btn-danger btn-block" href="/Products/Index">Volver atrás</a>
+                                    </div>
+                                    <div class="col-md-4"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+

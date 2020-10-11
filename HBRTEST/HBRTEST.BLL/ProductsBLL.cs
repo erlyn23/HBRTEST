@@ -8,7 +8,7 @@ using HBRTEST.Core.Interfaces;
 
 namespace HBRTEST.BLL
 {
-    public class ProductsBLL: IBLL<ProductEntity>
+    public class ProductsBLL: IRepository<ProductEntity>
     {
         private ProductsDAL _productsRepository = new ProductsDAL();
         public ProductsBLL()
@@ -27,9 +27,9 @@ namespace HBRTEST.BLL
             return product; 
         }
 
-        public List<ProductEntity> FilterProductsByCategoryName(string CategoryName)
+        public List<ProductEntity> FilterProductsByCategoryName(int categoryId)
         {
-            List<ProductEntity> filteredProducts = _productsRepository.FilterProductsByCategoryName(CategoryName);
+            List<ProductEntity> filteredProducts = _productsRepository.FilterProductsByCategoryName(categoryId);
             return filteredProducts;
         }
 
@@ -43,6 +43,7 @@ namespace HBRTEST.BLL
         {
             _productsRepository.CreateProduct(product);
         }
+
 
         public void Update(ProductEntity product)
         {

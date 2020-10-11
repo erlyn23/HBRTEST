@@ -204,8 +204,8 @@
       <Project>{b8433aa3-6e9c-45a8-9028-bb464e0bee0f}</Project>
       <Name>HBRTEST.BLL</Name>
     </ProjectReference>
-    <ProjectReference Include="..\HBRTEST.Entities\HBRTEST.Domain.csproj">
-      <Project>{474cc7aa-1a72-491a-a197-f0e6adb6cd27}</Project>
+    <ProjectReference Include="..\HBRTEST.Domain\HBRTEST.Domain.csproj">
+      <Project>{7ca798d2-e17f-4fb2-94fe-bd87be50d495}</Project>
       <Name>HBRTEST.Domain</Name>
     </ProjectReference>
     <ProjectReference Include="..\HBRTEST.ErrorHandling\HBRTEST.ErrorHandling.csproj">

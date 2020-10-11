@@ -1970,13 +1970,13 @@
     },
     "HBRTEST.Core/1.0.0": {
       "type": "project",
-      "path": "../HBRTEST.Utilities/HBRTEST.Core.csproj",
-      "msbuildProject": "../HBRTEST.Utilities/HBRTEST.Core.csproj"
+      "path": "../HBRTEST.Core/HBRTEST.Core.csproj",
+      "msbuildProject": "../HBRTEST.Core/HBRTEST.Core.csproj"
     },
     "HBRTEST.Domain/1.0.0": {
       "type": "project",
-      "path": "../HBRTEST.Entities/HBRTEST.Domain.csproj",
-      "msbuildProject": "../HBRTEST.Entities/HBRTEST.Domain.csproj"
+      "path": "../HBRTEST.Domain/HBRTEST.Domain.csproj",
+      "msbuildProject": "../HBRTEST.Domain/HBRTEST.Domain.csproj"
     },
     "HBRTEST.ErrorHandling/1.0.0": {
       "type": "project",
@@ -2020,6 +2020,12 @@
       "frameworks": {
         "netstandard2.0": {
           "projectReferences": {
+            "C:\\Users\\Lenovo\\Documents\\Visual Studio 2019\\Projects\\HBRTEST\\HBRTEST\\HBRTEST.Core\\HBRTEST.Core.csproj": {
+              "projectPath": "C:\\Users\\Lenovo\\Documents\\Visual Studio 2019\\Projects\\HBRTEST\\HBRTEST\\HBRTEST.Core\\HBRTEST.Core.csproj"
+            },
+            "C:\\Users\\Lenovo\\Documents\\Visual Studio 2019\\Projects\\HBRTEST\\HBRTEST\\HBRTEST.Domain\\HBRTEST.Domain.csproj": {
+              "projectPath": "C:\\Users\\Lenovo\\Documents\\Visual Studio 2019\\Projects\\HBRTEST\\HBRTEST\\HBRTEST.Domain\\HBRTEST.Domain.csproj"
+            },
             "C:\\Users\\Lenovo\\Documents\\Visual Studio 2019\\Projects\\HBRTEST\\HBRTEST\\HBRTEST.Entities\\HBRTEST.Domain.csproj": {
               "projectPath": "C:\\Users\\Lenovo\\Documents\\Visual Studio 2019\\Projects\\HBRTEST\\HBRTEST\\HBRTEST.Entities\\HBRTEST.Domain.csproj"
             },

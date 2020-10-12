@@ -7,6 +7,7 @@ using HBRTEST.Models;
 using HBRTEST.BLL;
 using HBRTEST.ErrorHandling;
 using HBRTEST.Domain;
+using HBRTEST.Services;
 using System.IO;
 
 namespace HBRTEST.Controllers
@@ -14,6 +15,7 @@ namespace HBRTEST.Controllers
     public class ProductsController : Controller
     {
         private ProductsBLL _productLogic = new ProductsBLL();
+        private UploadImageService _uploadImageService = new UploadImageService();
         HttpCookie sessionUserIdCookie;
         [HttpPost]
         public ActionResult GetProductById(int ProductId)
@@ -88,28 +90,7 @@ namespace HBRTEST.Controllers
             string result = string.Empty;
             try
             {
-                if (Request.Files.Count > 0)
-                {
-                    for (int i = 0; i < Request.Files.Count; i++)
-                    {
-                        var imageData = Request.Files[0];
-                        string imageName = imageData.FileName;
-                        Random random = new Random();
-                        int randomCode = random.Next(3000);
-                        string imagePath = String.Format("/ProductsImages/{0}_{1}", randomCode, imageName);
-
-                        if (Directory.Exists("/ProductsImages/"))
-                        {
-                            imageData.SaveAs(Server.MapPath(imagePath));
-                        }
-                        else
-                        {
-                            Directory.CreateDirectory(Server.MapPath("/ProductsImages/"));
-                            imageData.SaveAs(Server.MapPath(imagePath));
-                        }
-                        result = imagePath;
-                    }
-                }
+                result = _uploadImageService.UploadImage(Request);
             }
             catch(Exception exception)
             {

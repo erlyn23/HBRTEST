@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Text;
+﻿using System.Collections.Generic;
 using HBRTEST.DAL;
 using HBRTEST.Domain;
 using HBRTEST.Core.Interfaces;
@@ -37,7 +34,6 @@ namespace HBRTEST.BLL
         {
             _productsRepository.CreateProduct(product);
         }
-
 
         public void Update(ProductEntity product)
         {
